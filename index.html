@@ -119,7 +119,11 @@
               </a>
               <ul class="dropdown-menu">
                 <!-- #/{身分}/{左側選單}/{右上按鈕} -->
-                <li><a class="dropdown-item" href="#/employee/daily/clock-in">員工</a></li>
+                <li>
+                  <a class="dropdown-item" href="#/employee/daily/notice"
+                    >員工</a
+                  >
+                </li>
                 <li>
                   <a class="dropdown-item" href="#/manager/dashboard/todo"
                     >主管</a
@@ -136,7 +140,8 @@
     <div class="container">
       <div class="menu">
         <div id="list-example" class="list-group">
-          <a class="list-group-item list-group-item-action" href="#list-item-1"
+          <!-- 移動到sidebar -->
+          <!-- <a class="list-group-item list-group-item-action" href="#list-item-1"
             >日常考勤</a
           >
           <a class="list-group-item list-group-item-action" href="#list-item-2"
@@ -147,12 +152,12 @@
           >
           <a class="list-group-item list-group-item-action" href="#list-item-4"
             >主管審核狀態</a
-          >
+          > -->
         </div>
       </div>
       <div class="content">
-        <div class="content-list-group">
-          <a
+        <div id="topbar" class="content-list-group">
+          <!-- <a
             class="content-list-group-item start list-group-item-action"
             href="#"
             >公告</a
@@ -165,11 +170,16 @@
           >
           <a class="content-list-group-item end list-group-item-action" href="#"
             >補打卡申請</a
-          >
+          > -->
         </div>
-        <div style="height: 530px; border: 1px solid pink"></div>
+        <div
+          id="main-content"
+          class="card card-body"
+          style="min-height: 400px"
+        ></div>
       </div>
     </div>
+    <!-- <div id="sidebarContainer"></div> -->
     <script type="module" src="./js/index.js"></script>
   </body>
 </html>

@@ -1,9 +1,5 @@
-import employee from "./compoments/employee.js";
-import manager from "./compoments/manager.js";
-import router from "./router.js";
+import { initRouter } from "./router.js";
 
-window.addEventListener("DOMContentLoaded",()=>{
-// 不在這邊
-
-})
-
+window.addEventListener("DOMContentLoaded", (event) => {
+  initRouter();
+});

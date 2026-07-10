@@ -1,19 +1,18 @@
-import employee from "./compoments/employee.js";
-import manager from "./compoments/manager.js";
+import { sidebar } from "./components/sidebar.js";
+import { topbar } from "./components/topbar.js";
+import { mainContent } from "./components/mainContent.js";
 
-const router = [
-    {
-        Identity: "/employee",
-        compoment: employee
-    },
-    {
-        Identity: "/manager",
-        compoment: manager
-    },
-    {
-        Identity: "/",
-        compoment: manager
-    }
-]
+export function initRouter() {
+  window.addEventListener("hashchange", handleRouting);
+  handleRouting();
+}
 
-export default router;
+function handleRouting() {
+  const hash = window.location.hash.slice(2) || "employee/daily/notice";
+  const [role, menuId, actionId] = hash.split("/");
+  if (role && menuId && actionId) {
+    sidebar(role, menuId);
+    topbar(role, menuId, actionId);
+    mainContent(actionId);
+  }
+}
