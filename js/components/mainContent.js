@@ -13,12 +13,12 @@ export function mainContent(actionId) {
   let minute = String(today.getMinutes()).padStart(2, "0");
 
   // 請假明細
+  // 待改 主管簽核後才顯示請假紀錄
   let leaveTalCategory = "";
   let leaveStartDay = "";
   let leaveEndDay = "";
   if (actionId === "fa") {
-    const fa = localStorage.getItem("leaveInformation");
-    const faData = JSON.parse(fa);
+    const faData = JSON.parse(localStorage.getItem("leaveInformation"));
     leaveTalCategory = faData.talCategory;
     leaveStartDay = faData.startDay;
     leaveEndDay = faData.endDay;
@@ -61,7 +61,7 @@ export function mainContent(actionId) {
   } else if (actionId === "tal") {
     htmlString += `
       <h2>請假申請</h2>
-      <form class="d-flex flex-column gap-2">
+      <form id="tal-form" class="d-flex flex-column gap-2">
         <label for="tal-category">請假類別：</label>
           <select name="tal-category" id="tal-category">
             <option value="" disabled selected>請選擇請假類別</option>
@@ -78,14 +78,14 @@ export function mainContent(actionId) {
             <option value="特別休假">特別休假</option>
           </select>
         <label for="tal-start-date">日期：</label>
-        <input type="date" id="tal-start-date" onfocus="this.blur()" min="${yyyy}-${mm}-${dd}" name="tal-start-date" value="${yyyy}-${mm}-${dd}" />
+        <input type="date" id="tal-start-date" onfocus="this.blur()" min="${yyyy}-${mm}-${dd}" name="tal-start-date" required/>
         <label for="tal-start-time">時間：</label>
-        <input type="time" id="tal-start-time" name="tal-start-time" value="${hour}:${minute}" />
-        <p style="margin-bottom:0px">到</p>
+        <input type="time" id="tal-start-time" min="08:00" max="17:00" name="tal-start-time" required/>
+        <p>到</p>
         <label for="tal-end-date">日期：</label>
-        <input type="date" id="tal-end-date" onfocus="this.blur()" min="${yyyy}-${mm}-${dd}" name="tal-end-date" value="${yyyy}-${mm}-${dd}" />
+        <input type="date" id="tal-end-date" onfocus="this.blur()" min="${yyyy}-${mm}-${dd}" name="tal-end-date" required/>
         <label for="tal-end-time">時間：</label>
-        <input type="time" id="tal-end-time" name="tal-end-time" value="${hour}:${minute}" />
+        <input type="time" id="tal-end-time" min="08:00" max="17:00" name="tal-end-time" required/>
         <button id="tal-btn" class="btn btn-outline-secondary" type="submit">提交</button>
       </form>
     `;
@@ -93,16 +93,19 @@ export function mainContent(actionId) {
     htmlString += `
       <h2>加班申請</h2>
       <form class="d-flex flex-column gap-2">
+      <time id="gow-time" datetime="${hour}:${minute}">現在時間：${hour}:${minute}</time>
         <label for="overtime-reason">請輸入加班事由：</label>
         <input type="text" id="overtime-reason" name="overtime-reason" require/>
-        <label for="overtime-date">日期：</label>
-        <input type="date" id="overtime-date" name="overtime-date" value="${yyyy}-${mm}-${dd}" />
+        <label for="overtime-time">時間：</label>
+        <input type="time" id="overtime-time" name="overtime-time" value="${hour}:${minute}" />
+        <p>到</p>
         <label for="overtime-time">時間：</label>
         <input type="time" id="overtime-time" name="overtime-time" value="${hour}:${minute}" />
         <button class="btn btn-outline-secondary" type="submit">提交</button>
       </form>
     `;
   } else if (actionId === "fa") {
+    // 待改:主管簽核後才顯示請假紀錄
     htmlString += `
     <div class="d-flex flex-column gap-2">
       <h2>假勤明細</h2>
@@ -132,15 +135,32 @@ export function mainContent(actionId) {
     </div>
     </div>
     `;
+  } else if (actionId === "mySchedule") {
+    htmlString += `
+    <h2>代辦簽核</h2>
+
+    `;
+  } else if (actionId === "psfl") {
+    htmlString += `
+    <h2>考勤結算</h2>
+
+
+    `;
   }
   container.innerHTML = htmlString;
 
   // 請假申請
   function initTal() {
-    const talBtn = document.getElementById("tal-btn");
+    const talForm = document.getElementById("tal-form");
 
-    talBtn.addEventListener("click", function (event) {
+    talForm.addEventListener("submit", function (event) {
       event.preventDefault();
+
+      if (!talForm.checkValidity()) {
+        talForm.reportValidity();
+        return;
+      }
+
       const talCategory = document.getElementById("tal-category").value;
       const talStartDate = document.getElementById("tal-start-date").value;
       const talStartTime = document.getElementById("tal-start-time").value;
@@ -169,7 +189,12 @@ export function mainContent(actionId) {
       const endDay = `${talEndDate}T${talEndTime}`;
       // 待改(小時)
       // const hours = calculateLeaveDays(startDay, endDay);
-      const leaveInformation = { talCategory, startDay, endDay };
+      const leaveInformation = {
+        talCategory: talCategory,
+        startDay: startDay,
+        endDay: endDay,
+      };
+
       localStorage.setItem(
         "leaveInformation",
         JSON.stringify(leaveInformation),
