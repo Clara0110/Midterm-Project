@@ -142,7 +142,115 @@ export function mainContent(actionId) {
     `;
   } else if (actionId === "psfl") {
     htmlString += `
-    <h2>考勤結算</h2>
+    <table>
+      <thead>
+        <tr>
+        <th colspan="13">公司 員工          年    月份 出勤紀錄</th>
+        </tr>
+        <tr>
+          <th rowspan="3">出勤日期</th>
+          <th colspan="4">出勤時間</th>
+          <th colspan="2" rowspan="2">考勤狀況(分)</th>
+          <th rowspan="3">請假時數</th>
+          <th colspan="3" rowspan="2">加班</th>
+          <th rowspan="3">實際出勤總時數</th>
+          <th rowspan="3">備註</th>
+        </tr>
+        <tr>
+          <th colspan="2">約定出勤時間</th>
+          <th colspan="2">實際出勤時間</th>
+        </tr>
+        <tr>
+          <th>上班</th>
+          <th>下班</th>
+          <th>上班</th>
+          <th>下班</th>
+          <th>遲到</th>
+          <th>早退</th>
+          <th>起始時間</th>
+          <th>結束時間</th>
+          <th>總時數</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2026/07/12</td>
+          <td>09:00</td>
+          <td>18:00</td>
+          <td>0</td>
+          <td>0</td>
+          <td>2</td>
+          <td>8</td>
+          <td>10</td>
+          <td>3</td>
+          <td>3</td>
+          <td>3</td>
+          <td>3</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>2026/07/12</td>
+          <td>09:00</td>
+          <td>18:00</td>
+          <td>0</td>
+          <td>0</td>
+          <td>2</td>
+          <td>8</td>
+          <td>10</td>
+          <td>3</td>
+          <td>3</td>
+          <td>3</td>
+          <td>3</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>2026/07/12</td>
+          <td>09:00</td>
+          <td>18:00</td>
+          <td>0</td>
+          <td>0</td>
+          <td>2</td>
+          <td>8</td>
+          <td>10</td>
+          <td>3</td>
+          <td>3</td>
+          <td>3</td>
+          <td>3</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>2026/07/12</td>
+          <td>09:00</td>
+          <td>18:00</td>
+          <td>0</td>
+          <td>0</td>
+          <td>2</td>
+          <td>8</td>
+          <td>10</td>
+          <td>3</td>
+          <td>3</td>
+          <td>3</td>
+          <td>3</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>2026/07/12</td>
+          <td>09:00</td>
+          <td>18:00</td>
+          <td>0</td>
+          <td>0</td>
+          <td>2</td>
+          <td>8</td>
+          <td>10</td>
+          <td>3</td>
+          <td>3</td>
+          <td>3</td>
+          <td>3</td>
+          <td>3</td>
+        </tr>
+        <!-- 可依需求繼續新增多筆 -->
+      </tbody>
+    </table>
 
 
     `;
