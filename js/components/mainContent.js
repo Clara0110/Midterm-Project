@@ -14,12 +14,12 @@ export function mainContent(actionId) {
   let leaveTalCategory = "";
   let leaveStartDay = "";
   let leaveEndDay = "";
-  if (actionId === "mySchedule") {
-    const faData = JSON.parse(localStorage.getItem("leaveInformation"));
-    leaveTalCategory = faData.talCategory;
-    leaveStartDay = faData.startDay;
-    leaveEndDay = faData.endDay;
-  }
+  // if (actionId === "mySchedule") {
+  //   const faData = JSON.parse(localStorage.getItem("leaveInformation"));
+  //   leaveTalCategory = faData.talCategory;
+  //   leaveStartDay = faData.startDay;
+  //   leaveEndDay = faData.endDay;
+  // }
 
 
   if (actionId === "notice") {
@@ -134,6 +134,10 @@ export function mainContent(actionId) {
     </div>
     `;
   } else if (actionId === "mySchedule") {
+    const faData = JSON.parse(localStorage.getItem("leaveInformation"));
+    leaveTalCategory = faData.talCategory;
+    leaveStartDay = faData.startDay;
+    leaveEndDay = faData.endDay;
     htmlString += `
     <h2>代辦簽核</h2>
     <p>${leaveTalCategory}：${leaveStartDay} 到 ${leaveEndDay}</p>

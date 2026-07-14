@@ -10,7 +10,7 @@ export function sidebar(role, currentMenuId) {
           <a class="list-group-item list-group-item-action" href="#/employee/requests/tal"
             >假勤與加班申請</a
           >
-          <a class="list-group-item list-group-item-action" href="#/employee/reviewStatus/#"
+          <a class="list-group-item list-group-item-action" href="#/employee/reviewStatus/mySchedule"
             >主管審核狀態</a
           >
     `;
