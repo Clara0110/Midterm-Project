@@ -1,17 +1,13 @@
 import { leaveAndOvertimeRequests } from "./leaveAndOvertimeRequests.js";
 import psflData from "../data/psflData.js";
+import { dateUtils } from "../tool/dateUtils.js";
 
 export function mainContent(actionId) {
   const container = document.getElementById("main-content");
   let htmlString = ``;
 
   // 設定輸入日期
-  let today = new Date();
-  let dd = String(today.getDate()).padStart(2, "0");
-  let mm = String(today.getMonth() + 1).padStart(2, "0");
-  let yyyy = today.getFullYear();
-  let hour = String(today.getHours()).padStart(2, "0");
-  let minute = String(today.getMinutes()).padStart(2, "0");
+  const { today, dd, mm, yyyy, hour, minute } = dateUtils();
 
   // 請假明細
   // 待改 主管簽核後才顯示請假紀錄
@@ -173,8 +169,6 @@ export function mainContent(actionId) {
       <tbody id="tbody">
       </tbody>
     </table>
-
-
     `;
   }
   container.innerHTML = htmlString;
