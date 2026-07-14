@@ -1,4 +1,5 @@
 import { leaveAndOvertimeRequests } from "./leaveAndOvertimeRequests.js";
+import psflData from "../data/psflData.js";
 
 export function mainContent(actionId) {
   const container = document.getElementById("main-content");
@@ -23,6 +24,7 @@ export function mainContent(actionId) {
     leaveStartDay = faData.startDay;
     leaveEndDay = faData.endDay;
   }
+
 
   if (actionId === "notice") {
     htmlString += `
@@ -168,20 +170,7 @@ export function mainContent(actionId) {
           <th>總時數</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td>2026/07/12</td>
-          <td>09:00</td>
-          <td>18:00</td>
-          <td>2</td>
-          <td>8</td>
-          <td>10</td>
-          <td>3</td>
-          <td>3</td>
-          <td>3</td>
-          <td>3</td>
-          <td>3</td>
-        </tr>
+      <tbody id="tbody">
       </tbody>
     </table>
 
@@ -246,6 +235,27 @@ export function mainContent(actionId) {
   if (actionId === "tal") {
     initTal();
   }
+
+  if (actionId === "psfl") {
+    psfl()
+    // 提取考勤資料
+  }
+}
+
+function psfl() {
+  const tbody = document.getElementById("tbody");
+  const dFrag = document.createDocumentFragment();
+
+  Object.values(psflData).forEach(term => {
+    const row = document.createElement("tr");
+    Object.values(term).forEach(jia => {
+      const cell = document.createElement("td");
+      cell.textContent = jia;
+      row.appendChild(cell);
+    });
+    dFrag.appendChild(row);
+  });
+  tbody.appendChild(dFrag);
 }
 
 function calculateLeaveDays(startDate, endDate) {

@@ -1,107 +1,106 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      table,
-      td,
-      th {
-        border: 1px solid;
-        text-align: center;
-      }
 
-      table {
-        border-collapse: collapse;
-      }
-    </style>
-  </head>
-  <body>
-    <table>
-      <thead>
-        <tr>
-          <th>A</th>
-          <th>A</th>
-          <th>A</th>
-          <th>A</th>
-          <th>A</th>
-          <td>A</td>
-          <th>A</th>
-          <th>A</th>
-          <th>A</th>
-          <th>A</th>
-          <th>A</th>
-        </tr>
-      </thead>
-      <tbody id="tbody"></tbody>
-    </table>
-    <script>
-      let date = new Date();
-      let dd = date.getDate();
-      let mm = date.getMonth();
-      let yyyy = date.getFullYear();
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <style>
+    table,
+    td,
+    th {
+      border: 1px solid;
+      text-align: center;
+    }
 
-      console.log(date);
-      const tbody = document.getElementById("tbody");
+    table {
+      border-collapse: collapse;
+    }
+  </style>
+</head>
 
-      const data = {
-        A: {
-          出勤日期: `${yyyy}/${mm}/${dd}`,
-          上班: "qwe",
-          下班: "asd",
-          遲到: "fsd",
-          早退: "dfsg",
-          請假時數: "araf",
-          加班始: "hfh",
-          加班末: "serry",
-          加班總時數: "btaer",
-          實際出勤總時數: "hfg",
-          備註: "vdtzy",
-        },
-        B: {
-          出勤日期: `${yyyy}/${mm}/${dd}`,
-          上班: "qwe",
-          下班: "asd",
-          遲到: "fsd",
-          早退: "dfsg",
-          請假時數: "araf",
-          加班始: "hfh",
-          加班末: "serry",
-          加班總時數: "btaer",
-          實際出勤總時數: "hfg",
-          備註: "vdtzy",
-        },
-        C: {
-          出勤日期: `${yyyy}/${mm}/${dd}`,
-          上班: "qwe",
-          下班: "asd",
-          遲到: "fsd",
-          早退: "dfsg",
-          請假時數: "araf",
-          加班始: "hfh",
-          加班末: "serry",
-          加班總時數: "btaer",
-          實際出勤總時數: "hfg",
-          備註: "vdtzy",
-        },
-      };
+<body>
+  <table>
+    <thead>
+      <tr>
+        <th>A</th>
+        <th>A</th>
+        <th>A</th>
+        <th>A</th>
+        <th>A</th>
+        <th>A</th>
+        <th>A</th>
+        <th>A</th>
+        <th>A</th>
+        <th>A</th>
+        <th>A</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  <script>
+    const date = new Date();
+    const dd = String(date.getDate()).padStart(2, '0');
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const yyyy = date.getFullYear();
 
-      const values = Object.values(data.A);
-      console.log(values);
+    const tbody = document.getElementById("tbody");
 
-      for (let i = 0; i < 3; i++) {
-        const row = document.createElement("tr");
-        for (let y = 0; y < values.length; y++) {
-          const cell = document.createElement("td");
-          const redfd = data.A.上班;
-          console.log(redfd);
+    const data = {
+      A: {
+        出勤日期: `${yyyy}/${mm}/${dd}`,
+        上班: "09:00",
+        下班: "17:00",
+        遲到: "",
+        早退: "",
+        請假時數: "",
+        加班始: "hfh",
+        加班末: "serry",
+        加班總時數: "btaer",
+        實際出勤總時數: "hfg",
+        備註: "vdtzy",
+      },
+      B: {
+        出勤日期: `${yyyy}/${mm}/${dd}`,
+        上班: "09:00",
+        下班: "17:00",
+        遲到: "",
+        早退: "",
+        請假時數: "",
+        加班始: "hfh",
+        加班末: "serry",
+        加班總時數: "btaer",
+        實際出勤總時數: "hfg",
+        備註: "vdtzy",
+      },
+      C: {
+        出勤日期: `${yyyy}/${mm}/${dd}`,
+        上班: "09:00",
+        下班: "17:00",
+        遲到: "",
+        早退: "",
+        請假時數: "",
+        加班始: "hfh",
+        加班末: "serry",
+        加班總時數: "btaer",
+        實際出勤總時數: "hfg",
+        備註: "vdtzy",
+      },
+    };
 
-          cell.textContent = values[y];
-          row.appendChild(cell);
-        }
-        tbody.appendChild(row);
-      }
-    </script>
-  </body>
+    const dFrag = document.createDocumentFragment();
+
+    Object.values(data).forEach(term => {
+      const row = document.createElement("tr");
+      Object.values(term).forEach( jia => {
+        const cell = document.createElement("td");
+        cell.textContent = jia;
+        row.appendChild(cell);
+      });
+      dFrag.appendChild(row);
+    });
+     tbody.appendChild(dFrag);
+  </script>
+</body>
+
 </html>
