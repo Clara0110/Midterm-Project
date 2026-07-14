@@ -9,18 +9,6 @@ export function mainContent(actionId) {
   // 設定輸入日期
   const { today, dd, mm, yyyy, hour, minute } = dateUtils();
 
-  // 上下班打卡時間
-  let gtwTime;
-  let gowTime;
-  
-
-  // 請假明細
-  // 待改 主管簽核後才顯示請假紀錄
-  let leaveTalCategory = "";
-  let leaveStartDay = "";
-  let leaveEndDay = "";
-
-
   if (actionId === "notice") {
     htmlString += `
       <h2>公告</h2>
@@ -45,13 +33,13 @@ export function mainContent(actionId) {
   } else if (actionId === "muci") {
     htmlString += `
       <h2>補打卡申請</h2>
-      <form class="d-flex flex-column gap-2">
-        <label for="muci-form">請輸入補打卡申請原因：</label>
-        <input type="text" id="muci-form" name="muci-form" require/>
+      <form id="muci-form"class="d-flex flex-column gap-2">
+        <label for="muci-input">請輸入補打卡申請原因：</label>
+        <input type="text" id="muci-input" name="muci-form" require/>
         <label for="muci-date">日期：</label>
-        <input type="date" id="muci-date" name="muci-date" value="${yyyy}-${mm}-${dd}" />
+        <input type="date" id="muci-date" name="muci-date" value="${yyyy}-${mm}-${dd}" require/>
         <label for="muci-time">時間：</label>
-        <input type="time" id="muci-time" name="muci-time" value="${hour}:${minute}" />
+        <input type="time" id="muci-time" name="muci-time" value="${hour}:${minute}" require/>
         <button class="btn btn-outline-secondary" type="submit">提交</button>
       </form>
     `;
@@ -89,14 +77,14 @@ export function mainContent(actionId) {
   } else if (actionId === "overtime") {
     htmlString += `
       <h2>加班申請</h2>
-      <form class="d-flex flex-column gap-2">
+      <form id="overtime-form" class="d-flex flex-column gap-2">
         <label for="overtime-reason">請輸入加班事由：</label>
         <input type="text" id="overtime-reason" name="overtime-reason" require/>
-        <label for="overtime-time">時間：</label>
-        <input type="time" id="overtime-time" name="overtime-time" value="${hour}:${minute}" />
+        <label for="overtime-start">時間：</label>
+        <input type="time" id="overtime-start" name="overtime-start" value="${hour}:${minute}" require/>
         <p>到</p>
-        <label for="overtime-time">時間：</label>
-        <input type="time" id="overtime-time" name="overtime-time" value="${hour}:${minute}" />
+        <label for="overtime-end">時間：</label>
+        <input type="time" id="overtime-end" name="overtime-end" value="${hour}:${minute}" require/>
         <button class="btn btn-outline-secondary" type="submit">提交</button>
       </form>
     `;
@@ -131,10 +119,10 @@ export function mainContent(actionId) {
     </div>
     `;
   } else if (actionId === "mySchedule") {
-    const faData = JSON.parse(localStorage.getItem("leaveInformation"));
-    leaveTalCategory = faData.talCategory;
-    leaveStartDay = faData.startDay;
-    leaveEndDay = faData.endDay;
+    const faData = JSON.parse(localStorage.getItem("talData"));
+    const leaveTalCategory = faData.talCategory;
+    const leaveStartDay = faData.startDay;
+    const leaveEndDay = faData.endDay;
     htmlString += `
     <h2>代辦簽核</h2>
     <p>${leaveTalCategory}：${leaveStartDay} 到 ${leaveEndDay}</p>
@@ -173,103 +161,144 @@ export function mainContent(actionId) {
   }
   container.innerHTML = htmlString;
 
-  // 請假申請
-  function initTal() {
-    const talForm = document.getElementById("tal-form");
-
-    talForm.addEventListener("submit", function (event) {
-      event.preventDefault();
-
-      if (!talForm.checkValidity()) {
-        talForm.reportValidity();
-        return;
-      }
-
-      const talCategory = document.getElementById("tal-category").value;
-      const talStartDate = document.getElementById("tal-start-date").value;
-      const talStartTime = document.getElementById("tal-start-time").value;
-      const talEndDate = document.getElementById("tal-end-date").value;
-      const talEndTime = document.getElementById("tal-end-time").value;
-
-      if (!talCategory) {
-        alert("請選擇請假類別！");
-        return;
-      }
-
-      // 選單禁止輸入假日
-      const ddstartDay = new Date(talStartDate);
-      const ddEndDay = new Date(talEndDate);
-      if (
-        ddstartDay.getDay() === 6 ||
-        ddstartDay.getDay() === 0 ||
-        ddEndDay.getDay() === 6 ||
-        ddEndDay.getDay() === 0
-      ) {
-        alert("請選擇工作日！");
-        return;
-      }
-
-      const startDay = `${talStartDate}T${talStartTime}`;
-      const endDay = `${talEndDate}T${talEndTime}`;
-      // 待改(小時)
-      // const hours = calculateLeaveDays(startDay, endDay);
-      const leaveInformation = {
-        talCategory: talCategory,
-        startDay: startDay,
-        endDay: endDay,
-      };
-
-      localStorage.setItem(
-        "leaveInformation",
-        JSON.stringify(leaveInformation),
-      );
-    });
+  switch (actionId) {
+    case gtw:
+      gtw();
+      break;
+    case gow:
+      gow();
+      break;
+    case muci:
+      muci();
+      break;
+    case tal:
+      initTal();
+      break;
+    case overtime:
+      overtime();
+      break;
+    // case fa:
+    // case mySchedule:
+    case psfl:
+      // 提取考勤資料
+      psfl();
+      break;
   }
+}
+// 拿取上班打卡時間
+function gtw() {
+  const gtwForm = document.getElementById("gtw-form");
+  gtwForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const gtwTime = document.getElementById("gtw-time").dateTime;
+    localStorage.getItem("gtwTime", gtwTime);
+  });
+}
 
-  if (actionId === "tal") {
-    initTal();
-  }
+// 拿取下班打卡時間
+function gow() {
+  const gowForm = document.getElementById("gow-form");
+  gowForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const gowTime = document.getElementById("gow-time").dateTime;
+    localStorage.getItem("gowTime", gowTime);
+  });
+}
 
-  if (actionId === "psfl") {
-    psfl()
-    // 提取考勤資料
-  }
+function muci() {
+  const muciForm = document.getElementById("muci-form");
+  muciForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const muciInput = document.getElementById("muci-input").value;
+    const muciDate = document.getElementById("muci-date").value;
+    const muciTime = document.getElementById("muci-time").value;
 
-  if(actionId === "gtw") {
-    gtw()
-  }
+    const muciData = {
+      input: muciInput,
+      date: muciDate,
+      time: muciTime,
+    };
 
-    if(actionId === "gow") {
-    gow()
-  }
+    localStorage.setItem("muciData", JSON.stringify(muciData));
+  });
+}
 
-  // 拿取上班打卡時間
-  function gtw() {
-    const gtwForm = document.getElementById('gtw-form');
-    gtwForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      gtwTime = document.getElementById('gtw-time').dateTime;
-      console.log(gtwTime);
-    })
-  }
+// 請假申請
+function initTal() {
+  const talForm = document.getElementById("tal-form");
 
-  // 拿取下班打卡時間
-  function gow() {
-    const gowForm = document.getElementById('gow-form');
-    gtwForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      gowTime = document.getElementById('gow-time').dateTime;
-    })
-  }
+  talForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    if (!talForm.checkValidity()) {
+      talForm.reportValidity();
+      return;
+    }
+
+    const talCategory = document.getElementById("tal-category").value;
+    const talStartDate = document.getElementById("tal-start-date").value;
+    const talStartTime = document.getElementById("tal-start-time").value;
+    const talEndDate = document.getElementById("tal-end-date").value;
+    const talEndTime = document.getElementById("tal-end-time").value;
+
+    if (!talCategory) {
+      alert("請選擇請假類別！");
+      return;
+    }
+
+    // 選單禁止輸入假日
+    const ddstartDay = new Date(talStartDate);
+    const ddEndDay = new Date(talEndDate);
+    if (
+      ddstartDay.getDay() === 6 ||
+      ddstartDay.getDay() === 0 ||
+      ddEndDay.getDay() === 6 ||
+      ddEndDay.getDay() === 0
+    ) {
+      alert("請選擇工作日！");
+      return;
+    }
+
+    const startDay = `${talStartDate}T${talStartTime}`;
+    const endDay = `${talEndDate}T${talEndTime}`;
+    // 待改(小時)
+    // const hours = calculateLeaveDays(startDay, endDay);
+    const talData = {
+      talCategory: talCategory,
+      startDay: startDay,
+      endDay: endDay,
+    };
+
+    localStorage.setItem("talData", JSON.stringify(talData));
+  });
+}
+
+function overtime() {
+  const overtimeForm = document.getElementById("overtime-form");
+  overtimeForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const overtimeReason = document.getElementById("overtime-reason").value;
+    const overtimeStart = document.getElementById("overtime-start").value;
+    const overtimeEnd = document.getElementById("overtime-end").value;
+
+    const overtimeData = {
+      input: overtimeReason,
+      date: overtimeStart,
+      time: overtimeEnd,
+    };
+    console.log(overtimeData);
+
+    localStorage.setItem("overtimeData", JSON.stringify(overtimeData));
+  });
 }
 
 function psfl() {
   const tbody = document.getElementById("tbody");
   const dFrag = document.createDocumentFragment();
 
-  Object.values(psflData).forEach(term => {
+  Object.values(psflData).forEach((term) => {
     const row = document.createElement("tr");
-    Object.values(term).forEach(jia => {
+    Object.values(term).forEach((jia) => {
       const cell = document.createElement("td");
       cell.textContent = jia;
       row.appendChild(cell);
