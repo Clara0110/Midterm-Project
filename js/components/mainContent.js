@@ -9,17 +9,16 @@ export function mainContent(actionId) {
   // 設定輸入日期
   const { today, dd, mm, yyyy, hour, minute } = dateUtils();
 
+  // 上下班打卡時間
+  let gtwTime;
+  let gowTime;
+  
+
   // 請假明細
   // 待改 主管簽核後才顯示請假紀錄
   let leaveTalCategory = "";
   let leaveStartDay = "";
   let leaveEndDay = "";
-  // if (actionId === "mySchedule") {
-  //   const faData = JSON.parse(localStorage.getItem("leaveInformation"));
-  //   leaveTalCategory = faData.talCategory;
-  //   leaveStartDay = faData.startDay;
-  //   leaveEndDay = faData.endDay;
-  // }
 
 
   if (actionId === "notice") {
@@ -30,17 +29,17 @@ export function mainContent(actionId) {
   } else if (actionId === "gtw") {
     htmlString += `
       <h2>上班打卡</h2>
-      <form class="d-flex flex-column gap-2">
-        <time id="gow-time" datetime="${hour}:${minute}">現在時間：${hour}:${minute}</time>
-        <button class="btn btn-outline-secondary" id="gtw-button">打卡</button>
+      <form id="gtw-form" class="d-flex flex-column gap-2">
+        <time id="gtw-time" datetime="${hour}:${minute}">現在時間：${hour}:${minute}</time>
+        <button class="btn btn-outline-secondary" id="gtw-button" >打卡</button>
       </form>
     `;
   } else if (actionId === "gow") {
     htmlString += `
       <h2>下班打卡</h2>
-        <form class="d-flex flex-column gap-2">
-        <time id="gow-time" datetime="${hour}:${minute}">現在時間：${hour}:${minute}</time>
-      <button class="btn btn-outline-secondary" id="gow-button">打卡</button>
+      <form id="gow-form" class="d-flex flex-column gap-2">
+        <time id="gow-time" dateTime="${hour}:${minute}">現在時間：${hour}:${minute}</time>
+        <button class="btn btn-outline-secondary" id="gow-button">打卡</button>
       </form>
     `;
   } else if (actionId === "muci") {
@@ -91,7 +90,6 @@ export function mainContent(actionId) {
     htmlString += `
       <h2>加班申請</h2>
       <form class="d-flex flex-column gap-2">
-      <time id="gow-time" datetime="${hour}:${minute}">現在時間：${hour}:${minute}</time>
         <label for="overtime-reason">請輸入加班事由：</label>
         <input type="text" id="overtime-reason" name="overtime-reason" require/>
         <label for="overtime-time">時間：</label>
@@ -110,7 +108,6 @@ export function mainContent(actionId) {
       <div class="row">
       <section id="left-section" class="col-6">
       <p>請假紀錄：</p>
-      <p>${leaveTalCategory}：${leaveStartDay} 到 ${leaveEndDay}</p>
       </section>
       <section id="right-section "class="col-6">
       <p>可用假別：</p>
@@ -141,7 +138,6 @@ export function mainContent(actionId) {
     htmlString += `
     <h2>代辦簽核</h2>
     <p>${leaveTalCategory}：${leaveStartDay} 到 ${leaveEndDay}</p>
-
     `;
   } else if (actionId === "psfl") {
     htmlString += `
@@ -237,6 +233,33 @@ export function mainContent(actionId) {
   if (actionId === "psfl") {
     psfl()
     // 提取考勤資料
+  }
+
+  if(actionId === "gtw") {
+    gtw()
+  }
+
+    if(actionId === "gow") {
+    gow()
+  }
+
+  // 拿取上班打卡時間
+  function gtw() {
+    const gtwForm = document.getElementById('gtw-form');
+    gtwForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      gtwTime = document.getElementById('gtw-time').dateTime;
+      console.log(gtwTime);
+    })
+  }
+
+  // 拿取下班打卡時間
+  function gow() {
+    const gowForm = document.getElementById('gow-form');
+    gtwForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      gowTime = document.getElementById('gow-time').dateTime;
+    })
   }
 }
 
