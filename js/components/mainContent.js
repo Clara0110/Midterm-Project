@@ -119,7 +119,7 @@ export function mainContent(actionId) {
     </div>
     `;
   } else if (actionId === "mySchedule") {
-    const faData = JSON.parse(localStorage.getItem("talData"));
+    const faData = JSON.parse(localStorage.getItem("talData") ?? '""');
     const leaveTalCategory = faData.talCategory;
     const leaveStartDay = faData.startDay;
     const leaveEndDay = faData.endDay;
@@ -132,7 +132,7 @@ export function mainContent(actionId) {
     <table>
       <thead>
         <tr>
-        <th colspan="13">公司 員工          年    月份 出勤紀錄</th>
+        <th colspan="13">${yyyy}年${mm}月份 出勤紀錄</th>
         </tr>
         <tr>
           <th rowspan="2">出勤日期</th>
@@ -162,24 +162,24 @@ export function mainContent(actionId) {
   container.innerHTML = htmlString;
 
   switch (actionId) {
-    case gtw:
+    case "gtw":
       gtw();
       break;
-    case gow:
+    case "gow":
       gow();
       break;
-    case muci:
+    case "muci":
       muci();
       break;
-    case tal:
+    case "tal":
       initTal();
       break;
-    case overtime:
+    case "overtime":
       overtime();
       break;
     // case fa:
     // case mySchedule:
-    case psfl:
+    case "psfl":
       // 提取考勤資料
       psfl();
       break;
@@ -191,7 +191,8 @@ function gtw() {
   gtwForm.addEventListener("submit", (event) => {
     event.preventDefault();
     const gtwTime = document.getElementById("gtw-time").dateTime;
-    localStorage.getItem("gtwTime", gtwTime);
+    localStorage.setItem("gtwTime", JSON.stringify(gtwTime));
+    location.reload();
   });
 }
 
@@ -201,7 +202,8 @@ function gow() {
   gowForm.addEventListener("submit", (event) => {
     event.preventDefault();
     const gowTime = document.getElementById("gow-time").dateTime;
-    localStorage.getItem("gowTime", gowTime);
+    localStorage.setItem("gowTime", JSON.stringify(gowTime));
+    location.reload();
   });
 }
 
@@ -272,7 +274,7 @@ function initTal() {
     localStorage.setItem("talData", JSON.stringify(talData));
   });
 }
-
+// 加班申請
 function overtime() {
   const overtimeForm = document.getElementById("overtime-form");
   overtimeForm.addEventListener("submit", (event) => {
@@ -286,7 +288,6 @@ function overtime() {
       date: overtimeStart,
       time: overtimeEnd,
     };
-    console.log(overtimeData);
 
     localStorage.setItem("overtimeData", JSON.stringify(overtimeData));
   });
