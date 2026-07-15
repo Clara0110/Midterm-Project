@@ -303,8 +303,7 @@ function psfl() {
     const row = document.createElement("tr");
     for (let y = 0; y < 11; y++) {
       const cell = document.createElement("td");
-      const zxc = document.getElementsByTagName("td");
-      
+      const zxc = row.getElementsByTagName("td");
 
       if(zxc[y] == zxc[0]){
       const p = document.createElement("p");
