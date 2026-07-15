@@ -2,12 +2,12 @@ import { leaveAndOvertimeRequests } from "./leaveAndOvertimeRequests.js";
 import psflData from "../data/psflData.js";
 import { dateUtils } from "../tool/dateUtils.js";
 
+// 設定輸入日期
+const { today, dd, mm, yyyy, hour, minute, everyDay } = dateUtils();
+
 export function mainContent(actionId) {
   const container = document.getElementById("main-content");
   let htmlString = ``;
-
-  // 設定輸入日期
-  const { today, dd, mm, yyyy, hour, minute } = dateUtils();
 
   if (actionId === "notice") {
     htmlString += `
@@ -297,16 +297,49 @@ function psfl() {
   const tbody = document.getElementById("tbody");
   const dFrag = document.createDocumentFragment();
 
-  Object.values(psflData).forEach((term) => {
+  // console.log(values);
+
+  for (let i = everyDay - 1; i >= 0; i--) {
     const row = document.createElement("tr");
-    Object.values(term).forEach((jia) => {
+    for (let y = 0; y < 11; y++) {
       const cell = document.createElement("td");
-      cell.textContent = jia;
+      const zxc = document.getElementsByTagName("td");
+      
+
+      if(zxc[y] == zxc[0]){
+      const p = document.createElement("p");
+      p.textContent = `${yyyy}/${mm}/${dd-i}`;
+      cell.appendChild(p);
+      }
+    
       row.appendChild(cell);
-    });
-    dFrag.appendChild(row);
-  });
-  tbody.appendChild(dFrag);
+    }
+    tbody.appendChild(row);
+  }
+
+  // Object.values(psflData).forEach((term) => {
+  //   const row = document.createElement("tr");
+  //   Object.values(term).forEach((jia) => {
+  //     const cell = document.createElement("td");
+  //     cell.textContent = jia;
+  //     row.appendChild(cell);
+  //   });
+  //   dFrag.appendChild(row);
+  // });
+  // tbody.appendChild(dFrag);
+
+  // for (let i = 0; i < 3; i++) {
+  //   const row = document.createElement("tr");
+  //   for (let y = 0; y < values.length; y++) {
+  //     const cell = document.createElement("td");
+  //     const redfd = data.A.上班;
+  //     console.log(redfd);
+
+  //     cell.textContent = values[y];
+  //     row.appendChild(cell);
+  //   }
+  //   tbody.appendChild(row);
+  // }
 }
 
 function calculateLeaveDays(startDate, endDate) {

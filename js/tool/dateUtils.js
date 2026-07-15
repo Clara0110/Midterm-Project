@@ -6,5 +6,7 @@ export function dateUtils() {
     const hour = String(today.getHours()).padStart(2, "0");
     const minute = String(today.getMinutes()).padStart(2, "0");
 
-    return { today, dd, mm, yyyy, hour, minute };
+    const everyDay = today.getDate();
+
+    return { today, dd, mm, yyyy, hour, minute, everyDay };
 }
