@@ -16,16 +16,16 @@ export function sidebar(role, currentMenuId) {
     `;
   } else if (role === "manager") {
     htmlString += `
-      <a class="list-group-item list-group-item-action" href="#list-item-1"
+      <a class="list-group-item list-group-item-action" href="#/manager/tu/attendanceStatus"
             >團隊即時動態</a
           >
-          <a class="list-group-item list-group-item-action" href="#list-item-2"
+          <a class="list-group-item list-group-item-action" href="#/manager/sign-off/approvalCenter"
             >簽核管理</a
           >
-          <a class="list-group-item list-group-item-action" href="#list-item-4"
+          <a class="list-group-item list-group-item-action" href="#/manager/aems/exceptionHandling"
             >考勤管理</a
           >
-          <a class="list-group-item list-group-item-action" href="#list-item-5"
+          <a class="list-group-item list-group-item-action" href="#/manager/eRightsOverview/elai"
             >員工權益總覽</a
           >
     `;
