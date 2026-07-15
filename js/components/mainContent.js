@@ -297,48 +297,42 @@ function psfl() {
   const tbody = document.getElementById("tbody");
   const dFrag = document.createDocumentFragment();
 
-  // console.log(values);
-
-  for (let i = everyDay - 1; i >= 0; i--) {
-    const row = document.createElement("tr");
-    for (let y = 0; y < 11; y++) {
-      const cell = document.createElement("td");
-      const zxc = row.getElementsByTagName("td");
-
-      if(zxc[y] == zxc[0]){
-      const p = document.createElement("p");
-      p.textContent = `${yyyy}/${mm}/${dd-i}`;
-      cell.appendChild(p);
-      }
-    
-      row.appendChild(cell);
-    }
-    tbody.appendChild(row);
+  function createCell(content) {
+    const cell = document.createElement("td");
+    const p = document.createElement("p");
+    p.textContent = content;
+    cell.appendChild(p);
+    return cell;
   }
 
-  // Object.values(psflData).forEach((term) => {
-  //   const row = document.createElement("tr");
-  //   Object.values(term).forEach((jia) => {
-  //     const cell = document.createElement("td");
-  //     cell.textContent = jia;
-  //     row.appendChild(cell);
-  //   });
-  //   dFrag.appendChild(row);
-  // });
-  // tbody.appendChild(dFrag);
+  for (let i = everyDay - 1; i > 0; i--) {
+    const row = document.createElement("tr");
 
-  // for (let i = 0; i < 3; i++) {
-  //   const row = document.createElement("tr");
-  //   for (let y = 0; y < values.length; y++) {
-  //     const cell = document.createElement("td");
-  //     const redfd = data.A.上班;
-  //     console.log(redfd);
+    for (let y = 0; y < 11; y++) {
+      let content = "";
 
-  //     cell.textContent = values[y];
-  //     row.appendChild(cell);
-  //   }
-  //   tbody.appendChild(row);
-  // }
+      switch (y) {
+        case 0:
+          content = `${yyyy}/${mm}/${dd - i}`;
+          break;
+        case 1:
+          content = "09:00";
+          break;
+        case 2:
+          content = "17:00";
+          break;
+        case 9:
+          content = "8";
+          break;
+        default:
+          content = "";
+      }
+      row.appendChild(createCell(content));
+    }
+    dFrag.appendChild(row);
+  }
+
+  tbody.appendChild(dFrag);
 }
 
 function calculateLeaveDays(startDate, endDate) {
