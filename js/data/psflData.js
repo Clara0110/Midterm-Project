@@ -1,10 +1,10 @@
 import { dateUtils } from "../tool/dateUtils.js";
 const { today, dd, mm, yyyy, hour, minute } = dateUtils();
-const gtwTime = JSON.parse(localStorage.getItem("gtwTime") ?? '""');
-const gowTime = JSON.parse(localStorage.getItem("gowTime") ?? '""');
-const muciData = JSON.parse(localStorage.getItem("muciData") ?? '""');
-const talData = JSON.parse(localStorage.getItem("talData") ?? '""');
-const overtimeData = JSON.parse(localStorage.getItem("overtimeData") ?? '""');
+const gtwTime = JSON.parse(localStorage.getItem("gtwTime") ?? '""'); // gtwTime
+const gowTime = JSON.parse(localStorage.getItem("gowTime") ?? '""'); // gowTime
+const muciData = JSON.parse(localStorage.getItem("muciData") ?? '""'); // muciInput、muciDate、muciTime
+const talData = JSON.parse(localStorage.getItem("talData") ?? '""'); // talCategory、startDay、endDay
+const overtimeData = JSON.parse(localStorage.getItem("overtimeData") ?? '""'); // overtimeReason、overtimeStart、overtimeEnd
 
 const psflData = {
   A: {
