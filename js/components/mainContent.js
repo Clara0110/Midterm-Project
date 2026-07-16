@@ -203,7 +203,7 @@ export function mainContent(actionId) {
       <button class="btn btn-outline-secondary" style="margin:1px">✘</button>
     </form>
     <hr/>
-  `;
+    `;
     }
 
     if (talData.talCategory && talData.startDay && talData.endDay) {
@@ -227,7 +227,12 @@ export function mainContent(actionId) {
       );
     }
 
-  }
+  } else if (actionId === "exceptionHandling") { 
+    htmlString +=`123`;
+  } else if (actionId === "attendanceSettlement") {
+  } else if (actionId === "elai") { }
+
+
   container.innerHTML = htmlString;
 
   switch (actionId) {

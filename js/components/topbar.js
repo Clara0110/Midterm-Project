@@ -38,7 +38,7 @@ export function topbar(role, currentMenuId, actionId) {
               <a
             class="content-list-group-item start list-group-item-action"
             href="#/employee/reviewStatus/mySchedule"
-            >代辦簽核</a
+            >待辦簽核</a
           >
           <a class="content-list-group-item end list-group-item-action" href="#/employee/reviewStatus/psfl"
             >考勤結算</a
