@@ -47,25 +47,25 @@ export function topbar(role, currentMenuId, actionId) {
   } else if (role === "manager" && currentMenuId === "tu") {
     htmlString += `
               <a
-            class="content-list-group-item start end list-group-item-action">今日出勤動態</a>
+            class="content-list-group-item start end list-group-item-action" onfocus="this.blur()">今日出勤動態</a>
           `;
   } else if (role === "manager" && currentMenuId === "sign-off") {
     htmlString += `
              <a
-            class="content-list-group-item start end list-group-item-action">簽核管理</a>
+            class="content-list-group-item start end list-group-item-action" onfocus="this.blur()">簽核管理</a>
           `;
   } else if (role === "manager" && currentMenuId === "aems") {
     htmlString += `
               <a
-            class="content-list-group-item start list-group-item-action">異常處理</a>
+            class="content-list-group-item start list-group-item-action" href="#/manager/aems/exceptionHandling">異常處理</a>
              <a
-            class="content-list-group-item end list-group-item-action">考勤結算</a>
+            class="content-list-group-item end list-group-item-action" href="#/manager/aems/attendanceSettlement">考勤結算</a>
           `;
           
   } else if (role === "manager" && currentMenuId === "eRightsOverview") {
     htmlString += `
              <a
-            class="content-list-group-item start end list-group-item-action">員工權益總覽</a>
+            class="content-list-group-item start end list-group-item-action" onfocus="this.blur()">員工權益總覽</a>
           `;
   }
 

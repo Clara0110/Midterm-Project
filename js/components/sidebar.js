@@ -11,7 +11,7 @@ export function sidebar(role, currentMenuId) {
             >假勤與加班申請</a
           >
           <a class="list-group-item list-group-item-action" href="#/employee/reviewStatus/mySchedule"
-            >主管審核狀態</a
+            >待審核與考勤紀錄</a
           >
     `;
   } else if (role === "manager") {

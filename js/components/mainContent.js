@@ -143,7 +143,6 @@ export function mainContent(actionId) {
           <th rowspan="2">實際出勤總時數</th>
           <th rowspan="2">備註</th>
         </tr>
-
         <tr>
           <th >上班</th>
           <th >下班</th>
@@ -158,6 +157,51 @@ export function mainContent(actionId) {
       </tbody>
     </table>
     `;
+  } else if (actionId === "attendanceStatus") {
+    const gtwTime = JSON.parse(localStorage.getItem("gtwTime") ?? '""');
+    const gowTime = JSON.parse(localStorage.getItem("gowTime") ?? '""');
+    if (gtwTime || gowTime) {
+      htmlString += `
+    <p> 職員 01 :上班時間：${gtwTime}，下班時間：${gowTime}</p>
+    `;
+    }
+  } else if (actionId === "approvalCenter") {
+    const talData = JSON.parse(localStorage.getItem("talData") ?? '""'); // talCategory、startDay、endDay
+    const muciData = JSON.parse(localStorage.getItem("muciData") ?? '""'); // muciInput、muciDate、muciTime
+    const overtimeData = JSON.parse(localStorage.getItem("overtimeData") ?? '""'); // overtimeReason、overtimeStart、overtimeEnd
+
+    function buildForm(title, content) {
+      return `
+    <form>
+      <p style="display:inline-block">${title} - 職員 01 <br> ${content}</p>
+      <button class="btn btn-outline-secondary" style="margin:1px">✓</button>
+      <button class="btn btn-outline-secondary" style="margin:1px">✘</button>
+    </form>
+    <hr/>
+  `;
+    }
+
+    if (talData.talCategory && talData.startDay && talData.endDay) {
+      htmlString += buildForm(
+        "請假申請",
+        `類別：${talData.talCategory}，${talData.startDay} 到 ${talData.endDay}`
+      );
+    }
+
+    if (muciData.muciInput && muciData.muciDate && muciData.muciTime) {
+      htmlString += buildForm(
+        "補打卡申請",
+        `原因：${muciData.muciInput}，${muciData.muciDate} 到 ${muciData.muciTime}`
+      );
+    }
+
+    if (overtimeData.overtimeReason && overtimeData.overtimeStart && overtimeData.overtimeEnd) {
+      htmlString += buildForm(
+        "加班申請",
+        `原因：${overtimeData.overtimeReason}，${overtimeData.overtimeStart} 到 ${overtimeData.overtimeEnd}`
+      );
+    }
+
   }
   container.innerHTML = htmlString;
 
@@ -216,12 +260,13 @@ function muci() {
     const muciTime = document.getElementById("muci-time").value;
 
     const muciData = {
-      input: muciInput,
-      date: muciDate,
-      time: muciTime,
+      muciInput: muciInput,
+      muciDate: muciDate,
+      muciTime: muciTime,
     };
 
     localStorage.setItem("muciData", JSON.stringify(muciData));
+    location.reload();
   });
 }
 
@@ -229,7 +274,7 @@ function muci() {
 function initTal() {
   const talForm = document.getElementById("tal-form");
 
-  talForm.addEventListener("submit", function (event) {
+  talForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
     if (!talForm.checkValidity()) {
@@ -272,6 +317,7 @@ function initTal() {
     };
 
     localStorage.setItem("talData", JSON.stringify(talData));
+    location.reload();
   });
 }
 // 加班申請
@@ -284,26 +330,19 @@ function overtime() {
     const overtimeEnd = document.getElementById("overtime-end").value;
 
     const overtimeData = {
-      input: overtimeReason,
-      date: overtimeStart,
-      time: overtimeEnd,
+      overtimeReason: overtimeReason,
+      overtimeStart: overtimeStart,
+      overtimeEnd: overtimeEnd,
     };
 
     localStorage.setItem("overtimeData", JSON.stringify(overtimeData));
+    location.reload();
   });
 }
 
 function psfl() {
   const tbody = document.getElementById("tbody");
   const dFrag = document.createDocumentFragment();
-
-  function createCell(content) {
-    const cell = document.createElement("td");
-    const p = document.createElement("p");
-    p.textContent = content;
-    cell.appendChild(p);
-    return cell;
-  }
 
   for (let i = everyDay - 1; i >= 0; i--) {
     const row = document.createElement("tr");
@@ -352,6 +391,14 @@ function psfl() {
   }
 
   tbody.appendChild(dFrag);
+}
+
+function createCell(content) {
+  const cell = document.createElement("td");
+  const p = document.createElement("p");
+  p.textContent = content;
+  cell.appendChild(p);
+  return cell;
 }
 
 function calculateLeaveDays(startDate, endDate) {
