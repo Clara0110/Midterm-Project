@@ -119,14 +119,39 @@ export function mainContent(actionId) {
     </div>
     `;
   } else if (actionId === "mySchedule") {
-    const faData = JSON.parse(localStorage.getItem("talData") ?? '""');
-    const leaveTalCategory = faData.talCategory;
-    const leaveStartDay = faData.startDay;
-    const leaveEndDay = faData.endDay;
-    htmlString += `
-    <h2>代辦簽核</h2>
-    <p>${leaveTalCategory}：${leaveStartDay} 到 ${leaveEndDay}</p>
-    `;
+    const talData = JSON.parse(localStorage.getItem("talData") ?? '""'); // talCategory、startDay、endDay
+    const muciData = JSON.parse(localStorage.getItem("muciData") ?? '""'); // muciInput、muciDate、muciTime
+    const overtimeData = JSON.parse(localStorage.getItem("overtimeData") ?? '""'); // overtimeReason、overtimeStart、overtimeEnd
+
+    function buildForm(title, content) {
+      return `
+    <form>
+      <p style="display:inline-block">${title} <br> ${content}</p>
+    </form>
+    <hr/>
+  `;
+    }
+
+    if (talData.talCategory && talData.startDay && talData.endDay) {
+      htmlString += buildForm(
+        "請假申請",
+        `類別：${talData.talCategory}，${talData.startDay} 到 ${talData.endDay}`
+      );
+    }
+
+    if (muciData.muciInput && muciData.muciDate && muciData.muciTime) {
+      htmlString += buildForm(
+        "補打卡申請",
+        `原因：${muciData.muciInput}，${muciData.muciDate} 到 ${muciData.muciTime}`
+      );
+    }
+
+    if (overtimeData.overtimeReason && overtimeData.overtimeStart && overtimeData.overtimeEnd) {
+      htmlString += buildForm(
+        "加班申請",
+        `原因：${overtimeData.overtimeReason}，${overtimeData.overtimeStart} 到 ${overtimeData.overtimeEnd}`
+      );
+    }
   } else if (actionId === "psfl") {
     htmlString += `
     <table>
