@@ -44,6 +44,6 @@ export function initTal() {
     };
 
     localStorage.setItem("talData", JSON.stringify(talData));
-    mainContent("initTal");
+    location.reload();
   });
 }
