@@ -4,6 +4,6 @@ export function gow() {
     event.preventDefault();
     const gowTime = document.getElementById("gow-time").dateTime;
     localStorage.setItem("gowTime", JSON.stringify(gowTime));
-    location.reload();
+    mainContent("gow");
   });
 }

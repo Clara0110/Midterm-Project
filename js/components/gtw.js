@@ -4,6 +4,6 @@ export function gtw() {
     event.preventDefault();
     const gtwTime = document.getElementById("gtw-time").dateTime;
     localStorage.setItem("gtwTime", JSON.stringify(gtwTime));
-    location.reload();
+    mainContent("gtw");
   });
 }

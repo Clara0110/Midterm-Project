@@ -13,6 +13,6 @@ export function overtime() {
     };
 
     localStorage.setItem("overtimeData", JSON.stringify(overtimeData));
-    location.reload();
+    mainContent(overtime);
   });
 }

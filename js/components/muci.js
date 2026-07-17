@@ -13,6 +13,6 @@ export function muci() {
     };
 
     localStorage.setItem("muciData", JSON.stringify(muciData));
-    location.reload();
+    mainContent("muci");
   });
 }
