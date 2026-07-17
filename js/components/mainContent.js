@@ -2,8 +2,8 @@ import { leaveAndOvertimeRequests } from "./leaveAndOvertimeRequests.js";
 import psflData from "../data/psflData.js";
 import { dateUtils } from "../tool/dateUtils.js";
 
-import { gtw } from "./gtw.js" // 拿取上班打卡時間
-import { gow } from "./gow.js" // 拿取下班打卡時間
+import { gtw } from "./gtw.js"; // 拿取上班打卡時間
+import { gow } from "./gow.js"; // 拿取下班打卡時間
 import { muci } from "./muci.js";
 import { initTal } from "./initTal.js"; // 請假申請
 import { overtime } from "./overTime.js"; // 加班申請
@@ -128,7 +128,9 @@ export function mainContent(actionId) {
   } else if (actionId === "mySchedule") {
     const talData = JSON.parse(localStorage.getItem("talData") ?? '""'); // talCategory、startDay、endDay
     const muciData = JSON.parse(localStorage.getItem("muciData") ?? '""'); // muciInput、muciDate、muciTime
-    const overtimeData = JSON.parse(localStorage.getItem("overtimeData") ?? '""'); // overtimeReason、overtimeStart、overtimeEnd
+    const overtimeData = JSON.parse(
+      localStorage.getItem("overtimeData") ?? '""',
+    ); // overtimeReason、overtimeStart、overtimeEnd
 
     function buildForm(title, content) {
       return `
@@ -142,21 +144,25 @@ export function mainContent(actionId) {
     if (talData.talCategory && talData.startDay && talData.endDay) {
       htmlString += buildForm(
         "請假申請",
-        `類別：${talData.talCategory}，${talData.startDay} 到 ${talData.endDay}`
+        `類別：${talData.talCategory}，${talData.startDay} 到 ${talData.endDay}`,
       );
     }
 
     if (muciData.muciInput && muciData.muciDate && muciData.muciTime) {
       htmlString += buildForm(
         "補打卡申請",
-        `原因：${muciData.muciInput}，${muciData.muciDate} 到 ${muciData.muciTime}`
+        `原因：${muciData.muciInput}，${muciData.muciDate} 到 ${muciData.muciTime}`,
       );
     }
 
-    if (overtimeData.overtimeReason && overtimeData.overtimeStart && overtimeData.overtimeEnd) {
+    if (
+      overtimeData.overtimeReason &&
+      overtimeData.overtimeStart &&
+      overtimeData.overtimeEnd
+    ) {
       htmlString += buildForm(
         "加班申請",
-        `原因：${overtimeData.overtimeReason}，${overtimeData.overtimeStart} 到 ${overtimeData.overtimeEnd}`
+        `原因：${overtimeData.overtimeReason}，${overtimeData.overtimeStart} 到 ${overtimeData.overtimeEnd}`,
       );
     }
   } else if (actionId === "psfl") {
@@ -200,51 +206,58 @@ export function mainContent(actionId) {
   } else if (actionId === "approvalCenter") {
     const talData = JSON.parse(localStorage.getItem("talData") ?? '""'); // talCategory、startDay、endDay
     const muciData = JSON.parse(localStorage.getItem("muciData") ?? '""'); // muciInput、muciDate、muciTime
-    const overtimeData = JSON.parse(localStorage.getItem("overtimeData") ?? '""'); // overtimeReason、overtimeStart、overtimeEnd
+    const overtimeData = JSON.parse(
+      localStorage.getItem("overtimeData") ?? '""',
+    ); // overtimeReason、overtimeStart、overtimeEnd
     const decision = JSON.parse(localStorage.getItem("decision"));
 
-    function buildForm(title, content) {
+    function buildForm(key, title, content) {
       if (decision == "agree" || decision == "reject") {
         return ``;
       } else {
         return `
-        <form id="approvalCenterForm">
+        <form class="approval-center-form" data-key="${key}">
           <p style="display:inline-block">${title} - 職員 01 <br> ${content}</p>
-          <button id="approvalCenterAgree" class="btn btn-outline-secondary" style="margin:1px">✓</button>
-          <button id="approvalCenterReject" class="btn btn-outline-secondary" style="margin:1px">✘</button>
+          <button type="button" class="approval-center-agree btn btn-outline-secondary" style="margin:1px" data-key="${key}">✓</button>
+          <button type="button" class="approval-center-reject btn btn-outline-secondary" style="margin:1px" data-key="${key}">✘</button>
         </form>
         <hr/>
       `;
       }
     }
 
-
     if (talData.talCategory && talData.startDay && talData.endDay) {
       htmlString += buildForm(
+        Math.random().toString(36).substring(2, 10),
         "請假申請",
-        `類別：${talData.talCategory}，${talData.startDay} 到 ${talData.endDay}`
+        `類別：${talData.talCategory}，${talData.startDay} 到 ${talData.endDay}`,
       );
     }
 
     if (muciData.muciInput && muciData.muciDate && muciData.muciTime) {
       htmlString += buildForm(
+        Math.random().toString(36).substring(2, 10),
         "補打卡申請",
-        `原因：${muciData.muciInput}，${muciData.muciDate} 到 ${muciData.muciTime}`
+        `原因：${muciData.muciInput}，${muciData.muciDate} 到 ${muciData.muciTime}`,
       );
     }
 
-    if (overtimeData.overtimeReason && overtimeData.overtimeStart && overtimeData.overtimeEnd) {
+    if (
+      overtimeData.overtimeReason &&
+      overtimeData.overtimeStart &&
+      overtimeData.overtimeEnd
+    ) {
       htmlString += buildForm(
+        Math.random().toString(36).substring(2, 10),
         "加班申請",
-        `原因：${overtimeData.overtimeReason}，${overtimeData.overtimeStart} 到 ${overtimeData.overtimeEnd}`
+        `原因：${overtimeData.overtimeReason}，${overtimeData.overtimeStart} 到 ${overtimeData.overtimeEnd}`,
       );
     }
-
   } else if (actionId === "exceptionHandling") {
     htmlString += `123`;
   } else if (actionId === "attendanceSettlement") {
-  } else if (actionId === "elai") { }
-
+  } else if (actionId === "elai") {
+  }
 
   container.innerHTML = htmlString;
 
@@ -283,26 +296,33 @@ export function mainContent(actionId) {
 function approvalCenter() {
   let decision = null;
 
-  const approvalCenterAgree = document.getElementById("approvalCenterAgree");
-  const approvalCenterReject = document.getElementById("approvalCenterReject");
+  const approvalForms = document.querySelectorAll(".approval-center-form");
+  console.log(approvalForms);
 
-  approvalCenterAgree.addEventListener("click", (event) => {
-    event.preventDefault();
-    decision = "agree";
-    localStorage.setItem("decision", JSON.stringify(decision));
-    // location.reload() 會重新載入整個 HTML、CSS、JS，等於把整個應用程式重跑一次
-    mainContent("approvalCenter");
-  })
+  approvalForms.forEach((form) => {
+    const approvalCenterAgree = form.querySelector(".approval-center-agree");
+    const approvalCenterReject = form.querySelector(".approval-center-reject");
 
-  approvalCenterReject.addEventListener("click", (event) => {
-    event.preventDefault();
-    decision = "reject";
-    localStorage.setItem("decision", JSON.stringify(decision));
-    mainContent("approvalCenter");
-  })
+    if (!approvalCenterAgree || !approvalCenterReject) {
+      return;
+    }
 
+    approvalCenterAgree.addEventListener("click", (event) => {
+      event.preventDefault();
+      const key = approvalCenterAgree.dataset.key;
+      decision = "agree";
+      localStorage.setItem("decision", JSON.stringify(decision));
+      mainContent("approvalCenter");
+    });
 
-
+    approvalCenterReject.addEventListener("click", (event) => {
+      event.preventDefault();
+      const key = approvalCenterReject.dataset.key;
+      decision = "reject";
+      localStorage.setItem("decision", JSON.stringify(decision));
+      mainContent("approvalCenter");
+    });
+  });
 }
 
 function calculateLeaveDays(startDate, endDate) {
