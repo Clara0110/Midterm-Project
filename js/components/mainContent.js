@@ -2,6 +2,13 @@ import { leaveAndOvertimeRequests } from "./leaveAndOvertimeRequests.js";
 import psflData from "../data/psflData.js";
 import { dateUtils } from "../tool/dateUtils.js";
 
+import { gtw } from "./gtw.js" // 拿取上班打卡時間
+import { gow } from "./gow.js" // 拿取下班打卡時間
+import { muci } from "./muci.js";
+import { initTal } from "./initTal.js"; // 請假申請
+import { overtime } from "./overTime.js"; // 加班申請
+import { psfl } from "./psfl.js";
+
 // 設定輸入日期
 const { today, dd, mm, yyyy, hour, minute, everyDay } = dateUtils();
 
@@ -126,7 +133,7 @@ export function mainContent(actionId) {
     function buildForm(title, content) {
       return `
     <form>
-      <p style="display:inline-block">${title} <br> ${content}</p>
+      <p style="display:inline-block" >${title} <br> ${content}</p>
     </form>
     <hr/>
   `;
@@ -199,12 +206,13 @@ export function mainContent(actionId) {
       return `
     <form>
       <p style="display:inline-block">${title} - 職員 01 <br> ${content}</p>
-      <button class="btn btn-outline-secondary" style="margin:1px">✓</button>
-      <button class="btn btn-outline-secondary" style="margin:1px">✘</button>
+      <button id="approvalCenterAgree" class="btn btn-outline-secondary" style="margin:1px">✓</button>
+      <button id="approvalCenterReject" class="btn btn-outline-secondary" style="margin:1px">✘</button>
     </form>
     <hr/>
     `;
     }
+
 
     if (talData.talCategory && talData.startDay && talData.endDay) {
       htmlString += buildForm(
@@ -227,8 +235,8 @@ export function mainContent(actionId) {
       );
     }
 
-  } else if (actionId === "exceptionHandling") { 
-    htmlString +=`123`;
+  } else if (actionId === "exceptionHandling") {
+    htmlString += `123`;
   } else if (actionId === "attendanceSettlement") {
   } else if (actionId === "elai") { }
 
@@ -258,177 +266,6 @@ export function mainContent(actionId) {
       psfl();
       break;
   }
-}
-// 拿取上班打卡時間
-function gtw() {
-  const gtwForm = document.getElementById("gtw-form");
-  gtwForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const gtwTime = document.getElementById("gtw-time").dateTime;
-    localStorage.setItem("gtwTime", JSON.stringify(gtwTime));
-    location.reload();
-  });
-}
-
-// 拿取下班打卡時間
-function gow() {
-  const gowForm = document.getElementById("gow-form");
-  gowForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const gowTime = document.getElementById("gow-time").dateTime;
-    localStorage.setItem("gowTime", JSON.stringify(gowTime));
-    location.reload();
-  });
-}
-
-function muci() {
-  const muciForm = document.getElementById("muci-form");
-  muciForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const muciInput = document.getElementById("muci-input").value;
-    const muciDate = document.getElementById("muci-date").value;
-    const muciTime = document.getElementById("muci-time").value;
-
-    const muciData = {
-      muciInput: muciInput,
-      muciDate: muciDate,
-      muciTime: muciTime,
-    };
-
-    localStorage.setItem("muciData", JSON.stringify(muciData));
-    location.reload();
-  });
-}
-
-// 請假申請
-function initTal() {
-  const talForm = document.getElementById("tal-form");
-
-  talForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    if (!talForm.checkValidity()) {
-      talForm.reportValidity();
-      return;
-    }
-
-    const talCategory = document.getElementById("tal-category").value;
-    const talStartDate = document.getElementById("tal-start-date").value;
-    const talStartTime = document.getElementById("tal-start-time").value;
-    const talEndDate = document.getElementById("tal-end-date").value;
-    const talEndTime = document.getElementById("tal-end-time").value;
-
-    if (!talCategory) {
-      alert("請選擇請假類別！");
-      return;
-    }
-
-    // 選單禁止輸入假日
-    const ddstartDay = new Date(talStartDate);
-    const ddEndDay = new Date(talEndDate);
-    if (
-      ddstartDay.getDay() === 6 ||
-      ddstartDay.getDay() === 0 ||
-      ddEndDay.getDay() === 6 ||
-      ddEndDay.getDay() === 0
-    ) {
-      alert("請選擇工作日！");
-      return;
-    }
-
-    const startDay = `${talStartDate}T${talStartTime}`;
-    const endDay = `${talEndDate}T${talEndTime}`;
-    // 待改(小時)
-    // const hours = calculateLeaveDays(startDay, endDay);
-    const talData = {
-      talCategory: talCategory,
-      startDay: startDay,
-      endDay: endDay,
-    };
-
-    localStorage.setItem("talData", JSON.stringify(talData));
-    location.reload();
-  });
-}
-// 加班申請
-function overtime() {
-  const overtimeForm = document.getElementById("overtime-form");
-  overtimeForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const overtimeReason = document.getElementById("overtime-reason").value;
-    const overtimeStart = document.getElementById("overtime-start").value;
-    const overtimeEnd = document.getElementById("overtime-end").value;
-
-    const overtimeData = {
-      overtimeReason: overtimeReason,
-      overtimeStart: overtimeStart,
-      overtimeEnd: overtimeEnd,
-    };
-
-    localStorage.setItem("overtimeData", JSON.stringify(overtimeData));
-    location.reload();
-  });
-}
-
-function psfl() {
-  const tbody = document.getElementById("tbody");
-  const dFrag = document.createDocumentFragment();
-
-  for (let i = everyDay - 1; i >= 0; i--) {
-    const row = document.createElement("tr");
-
-    for (let y = 0; y < 11; y++) {
-      let content = "";
-
-      if (i == 0) {
-        switch (y) {
-          case 0:
-            content = `${yyyy}/${mm}/${dd - i}`;
-            break;
-          case 1:
-            content = "08:00";
-            break;
-          case 2:
-            content = "17:00";
-            break;
-          case 9:
-            content = "8";
-            break;
-          default:
-            content = "";
-        }
-      } else {
-        switch (y) {
-          case 0:
-            content = `${yyyy}/${mm}/${dd - i}`;
-            break;
-          case 1:
-            content = "09:00";
-            break;
-          case 2:
-            content = "17:00";
-            break;
-          case 9:
-            content = "8";
-            break;
-          default:
-            content = "";
-        }
-      }
-      row.appendChild(createCell(content));
-    }
-    dFrag.appendChild(row);
-  }
-
-  tbody.appendChild(dFrag);
-}
-
-function createCell(content) {
-  const cell = document.createElement("td");
-  const p = document.createElement("p");
-  p.textContent = content;
-  cell.appendChild(p);
-  return cell;
 }
 
 function calculateLeaveDays(startDate, endDate) {

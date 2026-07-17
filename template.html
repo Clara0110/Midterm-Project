@@ -1,105 +1,72 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
-    table,
-    td,
-    th {
-      border: 1px solid;
-      text-align: center;
+    toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
     }
 
-    table {
-      border-collapse: collapse;
+    toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+    }
+
+    slider:before {
+      content: "";
+      position: absolute;
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+    }
+
+    input:checked+.slider {
+      background-color: #2196F3;
+    }
+
+    input:checked+.slider:before {
+      transform: translateX(26px);
     }
   </style>
 </head>
 
 <body>
-  <table>
-    <thead>
-      <tr>
-        <th>A</th>
-        <th>A</th>
-        <th>A</th>
-        <th>A</th>
-        <th>A</th>
-        <th>A</th>
-        <th>A</th>
-        <th>A</th>
-        <th>A</th>
-        <th>A</th>
-        <th>A</th>
-      </tr>
-    </thead>
-    <tbody id="tbody"></tbody>
-  </table>
+  <label class="toggle-switch">
+    <input type="checkbox" id="myToggle">
+    <span class="slider"></span>
+  </label>
   <script>
-    const date = new Date();
-    const dd = String(date.getDate()).padStart(2, '0');
-    const mm = String(date.getMonth() + 1).padStart(2, '0');
-    const yyyy = date.getFullYear();
-
-    const tbody = document.getElementById("tbody");
-
-    const data = {
-      A: {
-        出勤日期: `${yyyy}/${mm}/${dd}`,
-        上班: "09:00",
-        下班: "17:00",
-        遲到: "",
-        早退: "",
-        請假時數: "",
-        加班始: "hfh",
-        加班末: "serry",
-        加班總時數: "btaer",
-        實際出勤總時數: "hfg",
-        備註: "vdtzy",
-      },
-      B: {
-        出勤日期: `${yyyy}/${mm}/${dd}`,
-        上班: "09:00",
-        下班: "17:00",
-        遲到: "",
-        早退: "",
-        請假時數: "",
-        加班始: "hfh",
-        加班末: "serry",
-        加班總時數: "btaer",
-        實際出勤總時數: "hfg",
-        備註: "vdtzy",
-      },
-      C: {
-        出勤日期: `${yyyy}/${mm}/${dd}`,
-        上班: "09:00",
-        下班: "17:00",
-        遲到: "",
-        早退: "",
-        請假時數: "",
-        加班始: "hfh",
-        加班末: "serry",
-        加班總時數: "btaer",
-        實際出勤總時數: "hfg",
-        備註: "vdtzy",
-      },
-    };
-
-    const dFrag = document.createDocumentFragment();
-
-    Object.values(data).forEach(term => {
-      const row = document.createElement("tr");
-      Object.values(term).forEach( jia => {
-        const cell = document.createElement("td");
-        cell.textContent = jia;
-        row.appendChild(cell);
-      });
-      dFrag.appendChild(row);
+    const toggleSwitch = document.querySelector('#myToggle');
+    toggleSwitch.addEventListener('change', function () {
+      if (this.checked) {
+        console.log('Toggle Switch is ON');
+        // Your ON logic here
+      } else {
+        console.log('Toggle Switch is OFF');
+        // Your OFF logic here
+      }
     });
-     tbody.appendChild(dFrag);
   </script>
 </body>
 
