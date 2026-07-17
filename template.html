@@ -1,73 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
+function approvalCenter() {
+  let decision = null;
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <style>
-    toggle-switch {
-      position: relative;
-      display: inline-block;
-      width: 60px;
-      height: 34px;
-    }
+  const approvalCenterAgree = document.getElementById("approvalCenterAgree");
+  const approvalCenterReject = document.getElementById("approvalCenterReject");
 
-    toggle-switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
+  approvalCenterAgree.addEventListener("click", (e) => {
+    e.preventDefault();
+    decision = "agree";
+    console.log(decision);
+  });
 
-    slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ccc;
-      transition: .4s;
-    }
-
-    slider:before {
-      content: "";
-      position: absolute;
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      transition: .4s;
-    }
-
-    input:checked+.slider {
-      background-color: #2196F3;
-    }
-
-    input:checked+.slider:before {
-      transform: translateX(26px);
-    }
-  </style>
-</head>
-
-<body>
-  <label class="toggle-switch">
-    <input type="checkbox" id="myToggle">
-    <span class="slider"></span>
-  </label>
-  <script>
-    const toggleSwitch = document.querySelector('#myToggle');
-    toggleSwitch.addEventListener('change', function () {
-      if (this.checked) {
-        console.log('Toggle Switch is ON');
-        // Your ON logic here
-      } else {
-        console.log('Toggle Switch is OFF');
-        // Your OFF logic here
-      }
-    });
-  </script>
-</body>
-
-</html>
+  approvalCenterReject.addEventListener("click", (e) => {
+    e.preventDefault();
+    decision = "reject";
+    console.log(decision);
+  });
+}

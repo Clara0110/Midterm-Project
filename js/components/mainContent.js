@@ -201,16 +201,21 @@ export function mainContent(actionId) {
     const talData = JSON.parse(localStorage.getItem("talData") ?? '""'); // talCategory、startDay、endDay
     const muciData = JSON.parse(localStorage.getItem("muciData") ?? '""'); // muciInput、muciDate、muciTime
     const overtimeData = JSON.parse(localStorage.getItem("overtimeData") ?? '""'); // overtimeReason、overtimeStart、overtimeEnd
+    const decision = JSON.parse(localStorage.getItem("decision"));
 
     function buildForm(title, content) {
-      return `
-    <form>
-      <p style="display:inline-block">${title} - 職員 01 <br> ${content}</p>
-      <button id="approvalCenterAgree" class="btn btn-outline-secondary" style="margin:1px">✓</button>
-      <button id="approvalCenterReject" class="btn btn-outline-secondary" style="margin:1px">✘</button>
-    </form>
-    <hr/>
-    `;
+      if (decision == "agree" || decision == "reject") {
+        return ``;
+      } else {
+        return `
+        <form id="approvalCenterForm">
+          <p style="display:inline-block">${title} - 職員 01 <br> ${content}</p>
+          <button id="approvalCenterAgree" class="btn btn-outline-secondary" style="margin:1px">✓</button>
+          <button id="approvalCenterReject" class="btn btn-outline-secondary" style="margin:1px">✘</button>
+        </form>
+        <hr/>
+      `;
+      }
     }
 
 
@@ -265,7 +270,39 @@ export function mainContent(actionId) {
       // 提取考勤資料
       psfl();
       break;
+    // case "attendanceStatus":
+    case "approvalCenter":
+      approvalCenter();
+      break;
+    // case "exceptionHandling":
+    // case "attendanceSettlement":
+    // case "elai":
   }
+}
+
+function approvalCenter() {
+  let decision = null;
+
+  const approvalCenterAgree = document.getElementById("approvalCenterAgree");
+  const approvalCenterReject = document.getElementById("approvalCenterReject");
+
+  approvalCenterAgree.addEventListener("click", (event) => {
+    event.preventDefault();
+    decision = "agree";
+    localStorage.setItem("decision", JSON.stringify(decision));
+    // location.reload() 會重新載入整個 HTML、CSS、JS，等於把整個應用程式重跑一次
+    mainContent("approvalCenter");
+  })
+
+  approvalCenterReject.addEventListener("click", (event) => {
+    event.preventDefault();
+    decision = "reject";
+    localStorage.setItem("decision", JSON.stringify(decision));
+    mainContent("approvalCenter");
+  })
+
+
+
 }
 
 function calculateLeaveDays(startDate, endDate) {
