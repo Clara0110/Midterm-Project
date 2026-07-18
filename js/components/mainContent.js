@@ -9,6 +9,8 @@ import { initTal } from "./initTal.js"; // 請假申請
 import { overtime } from "./overTime.js"; // 加班申請
 import { psfl } from "./psfl.js";
 import { approvalCenter } from "./approvalCenter.js";
+import { fa } from "./fa.js";
+import { mySchedule } from "./mySchedule.js  ";
 
 // 設定輸入日期
 const { today, dd, mm, yyyy, hour, minute, everyDay } = dateUtils();
@@ -97,6 +99,7 @@ export function mainContent(actionId) {
       </form>
     `;
   } else if (actionId === "fa") {
+    const KeyDecision = JSON.parse(localStorage.getItem("KeyDecision") ?? '""');
     // 待改:主管簽核後才顯示請假紀錄
     htmlString += `
     <div class="d-flex flex-column gap-2">
@@ -132,14 +135,19 @@ export function mainContent(actionId) {
     const overtimeData = JSON.parse(
       localStorage.getItem("overtimeData") ?? '""',
     ); // overtimeReason、overtimeStart、overtimeEnd
+    const KeyDecision = JSON.parse(localStorage.getItem("KeyDecision") ?? '""');
 
     function buildForm(title, content) {
-      return `
-    <form>
-      <p style="display:inline-block" >${title} <br> ${content}</p>
-    </form>
-    <hr/>
-  `;
+      if (KeyDecision.decision == "agree" || KeyDecision.decision == "reject") {
+        return ``;
+      } else {
+        return `
+      <form>
+        <p style="display:inline-block" >${title} <br> ${content}</p>
+      </form>
+      <hr/>
+    `;
+      }
     }
 
     if (talData.talCategory && talData.startDay && talData.endDay) {
@@ -278,8 +286,12 @@ export function mainContent(actionId) {
     case "overtime":
       overtime();
       break;
-    // case fa:
-    // case mySchedule:
+    case fa:
+      fa();
+      break;
+    case mySchedule:
+      mySchedule();
+      break;
     case "psfl":
       // 提取考勤資料
       psfl();
