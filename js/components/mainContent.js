@@ -99,7 +99,18 @@ export function mainContent(actionId) {
       </form>
     `;
   } else if (actionId === "fa") {
-    const KeyDecision = JSON.parse(localStorage.getItem("KeyDecision") ?? '""');
+    // const KeyDecision = JSON.parse(localStorage.getItem("KeyDecision") ?? '""');
+    // console.log(KeyDecision);
+
+    // function buildFa() {
+    //   if (KeyDecision && KeyDecision.decision === "agree") {
+    //     const fap = document.getElementById("fa");
+
+    //     fap.innerHTML = KeyDecision.decision;
+    //   }
+    // }
+    // buildFa();
+
     // 待改:主管簽核後才顯示請假紀錄
     htmlString += `
     <div class="d-flex flex-column gap-2">
@@ -107,6 +118,7 @@ export function mainContent(actionId) {
       <div class="row">
       <section id="left-section" class="col-6">
       <p>請假紀錄：</p>
+      <p id="fa"></p>
       </section>
       <section id="right-section "class="col-6">
       <p>可用假別：</p>
@@ -137,13 +149,13 @@ export function mainContent(actionId) {
     ); // overtimeReason、overtimeStart、overtimeEnd
     const KeyDecision = JSON.parse(localStorage.getItem("KeyDecision") ?? '""');
 
-    function buildForm(title, content) {
+    function buildForm(key, title, content) {
       if (KeyDecision.decision == "agree" || KeyDecision.decision == "reject") {
         return ``;
       } else {
         return `
       <form>
-        <p style="display:inline-block" >${title} <br> ${content}</p>
+        <p style="display:inline-block" data-key=${key} >${title} <br> ${content}</p>
       </form>
       <hr/>
     `;
@@ -152,6 +164,7 @@ export function mainContent(actionId) {
 
     if (talData.talCategory && talData.startDay && talData.endDay) {
       htmlString += buildForm(
+        KeyDecision.key,
         "請假申請",
         `類別：${talData.talCategory}，${talData.startDay} 到 ${talData.endDay}`,
       );
@@ -159,6 +172,7 @@ export function mainContent(actionId) {
 
     if (muciData.muciInput && muciData.muciDate && muciData.muciTime) {
       htmlString += buildForm(
+        KeyDecision.key,
         "補打卡申請",
         `原因：${muciData.muciInput}，${muciData.muciDate} 到 ${muciData.muciTime}`,
       );
@@ -170,6 +184,7 @@ export function mainContent(actionId) {
       overtimeData.overtimeEnd
     ) {
       htmlString += buildForm(
+        KeyDecision.key,
         "加班申請",
         `原因：${overtimeData.overtimeReason}，${overtimeData.overtimeStart} 到 ${overtimeData.overtimeEnd}`,
       );
@@ -218,26 +233,28 @@ export function mainContent(actionId) {
     const overtimeData = JSON.parse(
       localStorage.getItem("overtimeData") ?? '""',
     ); // overtimeReason、overtimeStart、overtimeEnd
-    const KeyDecision = JSON.parse(localStorage.getItem("KeyDecision")) ?? '""';
+    const keyDecisions = JSON.parse(
+      localStorage.getItem("KeyDecisions") ?? '""',
+    );
 
     function buildForm(key, title, content) {
-      if (KeyDecision.decision == "agree" || KeyDecision.decision == "reject") {
+      if (keyDecisions[key] === "agree" || keyDecisions[key] === "reject") {
         return ``;
       } else {
         return `
-        <form class="approval-center-form" data-key="${key}">
-          <p style="display:inline-block">${title} - 職員 01 <br> ${content}</p>
-          <button type="button" class="approval-center-agree btn btn-outline-secondary" style="margin:1px" data-key="${key}">✓</button>
-          <button type="button" class="approval-center-reject btn btn-outline-secondary" style="margin:1px" data-key="${key}">✘</button>
-        </form>
-        <hr/>
-      `;
+    <form class="approval-center-form" data-key="${key}">
+      <p style="display:inline-block">${title} - 職員 01 <br> ${content}</p>
+      <button type="button" class="approval-center-agree btn btn-outline-secondary" style="margin:1px" data-key="${key}">✓</button>
+      <button type="button" class="approval-center-reject btn btn-outline-secondary" style="margin:1px" data-key="${key}">✘</button>
+    </form>
+    <hr/>
+    `;
       }
     }
 
     if (talData.talCategory && talData.startDay && talData.endDay) {
       htmlString += buildForm(
-        Math.random().toString(36).substring(2, 10),
+        "leave_form",
         "請假申請",
         `類別：${talData.talCategory}，${talData.startDay} 到 ${talData.endDay}`,
       );
@@ -245,7 +262,7 @@ export function mainContent(actionId) {
 
     if (muciData.muciInput && muciData.muciDate && muciData.muciTime) {
       htmlString += buildForm(
-        Math.random().toString(36).substring(2, 10),
+        "punch_form",
         "補打卡申請",
         `原因：${muciData.muciInput}，${muciData.muciDate} 到 ${muciData.muciTime}`,
       );
@@ -257,7 +274,7 @@ export function mainContent(actionId) {
       overtimeData.overtimeEnd
     ) {
       htmlString += buildForm(
-        Math.random().toString(36).substring(2, 10),
+        "overtime_form",
         "加班申請",
         `原因：${overtimeData.overtimeReason}，${overtimeData.overtimeStart} 到 ${overtimeData.overtimeEnd}`,
       );
