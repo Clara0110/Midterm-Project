@@ -209,10 +209,10 @@ export function mainContent(actionId) {
     const overtimeData = JSON.parse(
       localStorage.getItem("overtimeData") ?? '""',
     ); // overtimeReason、overtimeStart、overtimeEnd
-    const decision = JSON.parse(localStorage.getItem("decision"));
+    const KeyDecision = JSON.parse(localStorage.getItem("KeyDecision")) ?? '""';
 
     function buildForm(key, title, content) {
-      if (decision == "agree" || decision == "reject") {
+      if (KeyDecision.decision == "agree" || KeyDecision.decision == "reject") {
         return ``;
       } else {
         return `
@@ -297,7 +297,6 @@ function approvalCenter() {
   let decision = null;
 
   const approvalForms = document.querySelectorAll(".approval-center-form");
-  console.log(approvalForms);
 
   approvalForms.forEach((form) => {
     const approvalCenterAgree = form.querySelector(".approval-center-agree");
@@ -311,7 +310,8 @@ function approvalCenter() {
       event.preventDefault();
       const key = approvalCenterAgree.dataset.key;
       decision = "agree";
-      localStorage.setItem("decision", JSON.stringify(decision));
+      const KeyDecision = { key: key, decision: decision };
+      localStorage.setItem("KeyDecision", JSON.stringify(KeyDecision));
       mainContent("approvalCenter");
     });
 
@@ -319,7 +319,8 @@ function approvalCenter() {
       event.preventDefault();
       const key = approvalCenterReject.dataset.key;
       decision = "reject";
-      localStorage.setItem("decision", JSON.stringify(decision));
+      const KeyDecision = { key: key, decision: decision };
+      localStorage.setItem("KeyDecision", JSON.stringify(KeyDecision));
       mainContent("approvalCenter");
     });
   });
