@@ -8,6 +8,7 @@ import { muci } from "./muci.js";
 import { initTal } from "./initTal.js"; // 請假申請
 import { overtime } from "./overTime.js"; // 加班申請
 import { psfl } from "./psfl.js";
+import { approvalCenter } from "./approvalCenter.js";
 
 // 設定輸入日期
 const { today, dd, mm, yyyy, hour, minute, everyDay } = dateUtils();
@@ -291,39 +292,6 @@ export function mainContent(actionId) {
     // case "attendanceSettlement":
     // case "elai":
   }
-}
-
-function approvalCenter() {
-  let decision = null;
-
-  const approvalForms = document.querySelectorAll(".approval-center-form");
-
-  approvalForms.forEach((form) => {
-    const approvalCenterAgree = form.querySelector(".approval-center-agree");
-    const approvalCenterReject = form.querySelector(".approval-center-reject");
-
-    if (!approvalCenterAgree || !approvalCenterReject) {
-      return;
-    }
-
-    approvalCenterAgree.addEventListener("click", (event) => {
-      event.preventDefault();
-      const key = approvalCenterAgree.dataset.key;
-      decision = "agree";
-      const KeyDecision = { key: key, decision: decision };
-      localStorage.setItem("KeyDecision", JSON.stringify(KeyDecision));
-      mainContent("approvalCenter");
-    });
-
-    approvalCenterReject.addEventListener("click", (event) => {
-      event.preventDefault();
-      const key = approvalCenterReject.dataset.key;
-      decision = "reject";
-      const KeyDecision = { key: key, decision: decision };
-      localStorage.setItem("KeyDecision", JSON.stringify(KeyDecision));
-      mainContent("approvalCenter");
-    });
-  });
 }
 
 function calculateLeaveDays(startDate, endDate) {
