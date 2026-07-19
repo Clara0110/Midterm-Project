@@ -12,7 +12,7 @@ export function approvalCenter() {
       const key = approvalCenterAgree.dataset.key;
 
       const currentDecisions = JSON.parse(
-        localStorage.getItem("KeyDecisions") ?? '""',
+        localStorage.getItem("KeyDecisions") ?? "{}",
       );
       currentDecisions[key] = "agree";
 
@@ -25,7 +25,7 @@ export function approvalCenter() {
       const key = approvalCenterReject.dataset.key;
 
       const currentDecisions = JSON.parse(
-        localStorage.getItem("KeyDecisions") ?? '""',
+        localStorage.getItem("KeyDecisions") ?? "{}",
       );
       currentDecisions[key] = "reject";
 

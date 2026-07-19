@@ -99,58 +99,93 @@ export function mainContent(actionId) {
       </form>
     `;
   } else if (actionId === "fa") {
-    // const KeyDecision = JSON.parse(localStorage.getItem("KeyDecision") ?? '""');
-    // console.log(KeyDecision);
+    const talData = JSON.parse(localStorage.getItem("talData") ?? "{}"); // talCategory、startDay、endDay
+    const muciData = JSON.parse(localStorage.getItem("muciData") ?? "{}"); // muciInput、muciDate、muciTime
+    const overtimeData = JSON.parse(
+      localStorage.getItem("overtimeData") ?? "{}",
+    ); // overtimeReason、overtimeStart、overtimeEnd
+    const keyDecisions = JSON.parse(
+      localStorage.getItem("KeyDecisions") ?? "{}",
+    );
 
-    // function buildFa() {
-    //   if (KeyDecision && KeyDecision.decision === "agree") {
-    //     const fap = document.getElementById("fa");
+    let approvedRecordsHTML = "";
 
-    //     fap.innerHTML = KeyDecision.decision;
-    //   }
-    // }
-    // buildFa();
+    if (talData.talCategory && keyDecisions["leave_form"] === "agree") {
+      approvedRecordsHTML += `
+    <div style="margin-bottom: 10px;">
+      <strong>請假</strong>${talData.talCategory} <br>
+      時間：${talData.startDay} 到 ${talData.endDay}
+    </div>
+  `;
+    }
 
-    // 待改:主管簽核後才顯示請假紀錄
+    if (muciData.muciInput && keyDecisions["punch_form"] === "agree") {
+      approvedRecordsHTML += `
+    <div style="margin-bottom: 10px;">
+      <strong>補打卡</strong>-原因：${muciData.muciInput} <br>
+      時間：${muciData.muciDate} ${muciData.muciTime}
+    </div>
+  `;
+    }
+
+    if (
+      overtimeData.overtimeReason &&
+      keyDecisions["overtime_form"] === "agree"
+    ) {
+      approvedRecordsHTML += `
+    <div style="margin-bottom: 10px;">
+      <strong>加班</strong>${overtimeData.overtimeReason} <br>
+      時間：${overtimeData.overtimeStart} 到 ${overtimeData.overtimeEnd}
+    </div>
+  `;
+    }
+
+    if (approvedRecordsHTML === "") {
+      approvedRecordsHTML =
+        "<span style='color: gray;'>暫無已核准的假勤紀錄</span>";
+    }
+
     htmlString += `
     <div class="d-flex flex-column gap-2">
       <h2>假勤明細</h2>
       <div class="row">
       <section id="left-section" class="col-6">
-      <p>請假紀錄：</p>
-      <p id="fa"></p>
+        <p>核准紀錄：</p>
+        <div id="fa">${approvedRecordsHTML}</div> 
       </section>
-      <section id="right-section "class="col-6">
-      <p>可用假別：</p>
-      <ul>
-        <li>事假：每年最多 14 天（無薪）</li>
-        <li>病假：普通傷病每年最多 30 天（折半薪）；住院最多 1 年</li>
-        <li>婚假：8 天（全薪）</li>
-        <li>喪假：3–8 天（依親屬等級，全薪）</li>
-        <li>公假：依法或因公務需要，全薪</li>
-        <li>生理假：每月 1 天，全年最多 3 天（折半薪）</li>
-        <li>產假：分娩 8 週；流產 5 日至 4 週（全薪）</li>
-        <li>安胎休養假：依醫師診斷需要</li>
-        <li>產檢假：7 天（全薪）</li>
-        <li>陪產假：7 天（全薪，逾 5 日政府補助）</li>
-        <li>家庭照顧假：每年最多 7 天（併入事假，無薪）</li>
-        <li>育嬰留職停薪假：最長 2 年（無薪，保障復職）</li>
-        <li>特別休假（年假）：年資滿 1 年有 3 天</li>
-      </ul>
+      <section id="right-section" class="col-6">
+        <p>可用假別：</p>
+        <ul>
+          <li>事假：每年最多 14 天（無薪）</li>
+          <li>病假：普通傷病每年最多 30 天（折半薪）；住院最多 1 年</li>
+          <li>婚假：8 天（全薪）</li>
+          <li>喪假：3–8 天（依親屬等級，全薪）</li>
+          <li>公假：依法或因公務需要，全薪</li>
+          <li>生理假：每月 1 天，全年最多 3 天（折半薪）</li>
+          <li>產假：分娩 8 週；流產 5 日至 4 週（全薪）</li>
+          <li>安胎休養假：依醫師診斷需要</li>
+          <li>產檢假：7 天（全薪）</li>
+          <li>陪產假：7 天（全薪，逾 5 日政府補助）</li>
+          <li>家庭照顧假：每年最多 7 天（併入事假，無薪）</li>
+          <li>育嬰留職停薪假：最長 2 年（無薪，保障復職）</li>
+          <li>特別休假（年假）：年資滿 1 年有 3 天</li>
+        </ul>
       </section>
+      </div>
     </div>
-    </div>
-    `;
+`;
   } else if (actionId === "mySchedule") {
     const talData = JSON.parse(localStorage.getItem("talData") ?? '""'); // talCategory、startDay、endDay
     const muciData = JSON.parse(localStorage.getItem("muciData") ?? '""'); // muciInput、muciDate、muciTime
     const overtimeData = JSON.parse(
-      localStorage.getItem("overtimeData") ?? '""',
+      localStorage.getItem("overtimeData") ?? "{}",
     ); // overtimeReason、overtimeStart、overtimeEnd
-    const KeyDecision = JSON.parse(localStorage.getItem("KeyDecision") ?? '""');
+    const keyDecisions = JSON.parse(
+      localStorage.getItem("KeyDecisions") ?? "{}",
+    );
 
     function buildForm(key, title, content) {
-      if (KeyDecision.decision == "agree" || KeyDecision.decision == "reject") {
+      if (keyDecisions[key] == "agree" || keyDecisions[key] == "reject") {
         return ``;
       } else {
         return `
@@ -164,7 +199,7 @@ export function mainContent(actionId) {
 
     if (talData.talCategory && talData.startDay && talData.endDay) {
       htmlString += buildForm(
-        KeyDecision.key,
+        "leave_form",
         "請假申請",
         `類別：${talData.talCategory}，${talData.startDay} 到 ${talData.endDay}`,
       );
@@ -172,7 +207,7 @@ export function mainContent(actionId) {
 
     if (muciData.muciInput && muciData.muciDate && muciData.muciTime) {
       htmlString += buildForm(
-        KeyDecision.key,
+        "punch_form",
         "補打卡申請",
         `原因：${muciData.muciInput}，${muciData.muciDate} 到 ${muciData.muciTime}`,
       );
@@ -184,7 +219,7 @@ export function mainContent(actionId) {
       overtimeData.overtimeEnd
     ) {
       htmlString += buildForm(
-        KeyDecision.key,
+        "overtime_form",
         "加班申請",
         `原因：${overtimeData.overtimeReason}，${overtimeData.overtimeStart} 到 ${overtimeData.overtimeEnd}`,
       );
@@ -234,7 +269,7 @@ export function mainContent(actionId) {
       localStorage.getItem("overtimeData") ?? '""',
     ); // overtimeReason、overtimeStart、overtimeEnd
     const keyDecisions = JSON.parse(
-      localStorage.getItem("KeyDecisions") ?? '""',
+      localStorage.getItem("KeyDecisions") ?? "{}",
     );
 
     function buildForm(key, title, content) {
