@@ -240,9 +240,9 @@ export function mainContent(actionId) {
     </table>
     `;
   } else if (actionId === "attendanceStatus") {
-    if (gtwTime || gowTime) {
+    if (gtwTime.gtwTime || gowTime) {
       htmlString += `
-    <p> 職員 01 :上班時間：${gtwTime}，下班時間：${gowTime}</p>
+    <p> 職員 01 :上班時間：${gtwTime.gtwTime}，下班時間：${gowTime}</p>
     `;
     }
   } else if (actionId === "approvalCenter") {
@@ -326,7 +326,9 @@ export function mainContent(actionId) {
     case "approvalCenter":
       approvalCenter();
       break;
-    // case "exceptionHandling":
+    case "exceptionHandling":
+      exceptionHandling();
+      break;
     // case "attendanceSettlement":
     // case "elai":
   }

@@ -30,11 +30,14 @@ export function psfl() {
           break;
 
         case 2:
-          content = i === 0 ? gtwTime : "17:00";
+          content = i === 0 ? gtwTime.gtwTime : "17:00";
           break;
 
+        case 3:
+          content = i === 0 ? gtwTime.gtwTime : "17:00";
+          break;
         case 9:
-          if (i === 0 && (gowTime || gtwTime)) {
+          if (i === 0 && (gowTime || gtwTime.gtwTime)) {
             content = "";
           } else {
             content = "8";
@@ -57,4 +60,19 @@ function createCell(content) {
   p.textContent = content;
   cell.appendChild(p);
   return cell;
+}
+
+function late() {
+  let d = new Date();
+  d.setHours(8, 0, 0, 0);
+
+  const gtwTime = JSON.parse(localStorage.getItem("gtwTime") ?? '""');
+  const [hour, minute] = gtwTime.gtwTime.split(":").map(Number);
+
+  let qweTime = new Date();
+  qweTime.setHours(hour, minute, 0, 0);
+
+  const diffHours = (qweTime - d) / (1000 * 60 * 60);
+
+  console.log("遲到:", diffHours);
 }

@@ -1,18 +1,27 @@
-function approvalCenter() {
-  let decision = null;
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function late() {
+        let d = new Date();
+        d.setHours(8, 0, 0, 0);
 
-  const approvalCenterAgree = document.getElementById("approvalCenterAgree");
-  const approvalCenterReject = document.getElementById("approvalCenterReject");
+        const gtwTime = JSON.parse(localStorage.getItem("gtwTime") ?? '""');
 
-  approvalCenterAgree.addEventListener("click", (e) => {
-    e.preventDefault();
-    decision = "agree";
-    console.log(decision);
-  });
+        const [hour, minute] = gtwTime.gtwTime.split(":").map(Number);
 
-  approvalCenterReject.addEventListener("click", (e) => {
-    e.preventDefault();
-    decision = "reject";
-    console.log(decision);
-  });
-}
+        let qweTime = new Date();
+        qweTime.setHours(hour, minute, 0, 0);
+
+        if (qweTime >= d) {
+          console.log("大於八點");
+        }
+      }
+    </script>
+  </body>
+</html>
