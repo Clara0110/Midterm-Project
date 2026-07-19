@@ -1,6 +1,7 @@
 import { leaveAndOvertimeRequests } from "./leaveAndOvertimeRequests.js";
 import psflData from "../data/psflData.js";
 import { dateUtils } from "../tool/dateUtils.js";
+import { getItem } from "../tool/getItem.js";
 
 import { gtw } from "./gtw.js"; // 拿取上班打卡時間
 import { gow } from "./gow.js"; // 拿取下班打卡時間
@@ -14,6 +15,8 @@ import { mySchedule } from "./mySchedule.js  ";
 
 // 設定輸入日期
 const { today, dd, mm, yyyy, hour, minute, everyDay } = dateUtils();
+const { gtwTime, gowTime, muciData, talData, overtimeData, keyDecisions } =
+  getItem();
 
 export function mainContent(actionId) {
   const container = document.getElementById("main-content");
@@ -99,15 +102,6 @@ export function mainContent(actionId) {
       </form>
     `;
   } else if (actionId === "fa") {
-    const talData = JSON.parse(localStorage.getItem("talData") ?? "{}"); // talCategory、startDay、endDay
-    const muciData = JSON.parse(localStorage.getItem("muciData") ?? "{}"); // muciInput、muciDate、muciTime
-    const overtimeData = JSON.parse(
-      localStorage.getItem("overtimeData") ?? "{}",
-    ); // overtimeReason、overtimeStart、overtimeEnd
-    const keyDecisions = JSON.parse(
-      localStorage.getItem("KeyDecisions") ?? "{}",
-    );
-
     let approvedRecordsHTML = "";
 
     if (talData.talCategory && keyDecisions["leave_form"] === "agree") {
@@ -175,15 +169,6 @@ export function mainContent(actionId) {
     </div>
 `;
   } else if (actionId === "mySchedule") {
-    const talData = JSON.parse(localStorage.getItem("talData") ?? '""'); // talCategory、startDay、endDay
-    const muciData = JSON.parse(localStorage.getItem("muciData") ?? '""'); // muciInput、muciDate、muciTime
-    const overtimeData = JSON.parse(
-      localStorage.getItem("overtimeData") ?? "{}",
-    ); // overtimeReason、overtimeStart、overtimeEnd
-    const keyDecisions = JSON.parse(
-      localStorage.getItem("KeyDecisions") ?? "{}",
-    );
-
     function buildForm(key, title, content) {
       if (keyDecisions[key] == "agree" || keyDecisions[key] == "reject") {
         return ``;
@@ -255,23 +240,12 @@ export function mainContent(actionId) {
     </table>
     `;
   } else if (actionId === "attendanceStatus") {
-    const gtwTime = JSON.parse(localStorage.getItem("gtwTime") ?? '""');
-    const gowTime = JSON.parse(localStorage.getItem("gowTime") ?? '""');
     if (gtwTime || gowTime) {
       htmlString += `
     <p> 職員 01 :上班時間：${gtwTime}，下班時間：${gowTime}</p>
     `;
     }
   } else if (actionId === "approvalCenter") {
-    const talData = JSON.parse(localStorage.getItem("talData") ?? '""'); // talCategory、startDay、endDay
-    const muciData = JSON.parse(localStorage.getItem("muciData") ?? '""'); // muciInput、muciDate、muciTime
-    const overtimeData = JSON.parse(
-      localStorage.getItem("overtimeData") ?? '""',
-    ); // overtimeReason、overtimeStart、overtimeEnd
-    const keyDecisions = JSON.parse(
-      localStorage.getItem("KeyDecisions") ?? "{}",
-    );
-
     function buildForm(key, title, content) {
       if (keyDecisions[key] === "agree" || keyDecisions[key] === "reject") {
         return ``;
