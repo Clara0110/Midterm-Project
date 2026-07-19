@@ -1,6 +1,6 @@
 export function getItem() {
   const gtwTime = JSON.parse(localStorage.getItem("gtwTime") ?? "{}"); // gtwTime
-  const gowTime = JSON.parse(localStorage.getItem("gowTime") ?? "{}"); // gowTime
+  const gowTime = localStorage.getItem("gowTime") ?? ""; // gowTime
   const muciData = JSON.parse(localStorage.getItem("muciData") ?? "{}"); // muciInput、muciDate、muciTime
   const talData = JSON.parse(localStorage.getItem("talData") ?? "{}"); // talCategory、startDay、endDay
   const overtimeData = JSON.parse(localStorage.getItem("overtimeData") ?? "{}"); // overtimeReason、overtimeStart、overtimeEnd

@@ -8,14 +8,17 @@ export function psfl() {
 
   const dFrag = document.createDocumentFragment();
 
-  const gowTime = JSON.parse(localStorage.getItem("gowTime") || "");
-  const gtwTime = JSON.parse(localStorage.getItem("gtwTime") || "");
+  const gowTime = localStorage.getItem("gowTime") || "";
+  const gtwTime = JSON.parse(localStorage.getItem("gtwTime") || "{}");
+  console.log(gtwTime);
 
   for (let i = everyDay - 1; i >= 0; i--) {
     const row = document.createElement("tr");
 
     const currentDay = String(everyDay - i).padStart(2, "0");
     const formattedDate = `${yyyy}/${mm}/${currentDay}`;
+    const late = Number(gtwTime.late ?? 0);
+    const asd = late === 0 ? "" : late.toFixed(2);
 
     for (let y = 0; y < 11; y++) {
       let content = "";
@@ -26,15 +29,15 @@ export function psfl() {
           break;
 
         case 1:
-          content = i === 0 ? gowTime : "09:00";
+          content = i === 0 ? gtwTime.gtwTime : "09:00";
           break;
 
         case 2:
-          content = i === 0 ? gtwTime.gtwTime : "17:00";
+          content = i === 0 ? gowTime : "17:00";
           break;
 
         case 3:
-          content = i === 0 ? gtwTime.gtwTime : "17:00";
+          content = i === 0 ? asd : "";
           break;
         case 9:
           if (i === 0 && (gowTime || gtwTime.gtwTime)) {
@@ -60,19 +63,4 @@ function createCell(content) {
   p.textContent = content;
   cell.appendChild(p);
   return cell;
-}
-
-function late() {
-  let d = new Date();
-  d.setHours(8, 0, 0, 0);
-
-  const gtwTime = JSON.parse(localStorage.getItem("gtwTime") ?? '""');
-  const [hour, minute] = gtwTime.gtwTime.split(":").map(Number);
-
-  let qweTime = new Date();
-  qweTime.setHours(hour, minute, 0, 0);
-
-  const diffHours = (qweTime - d) / (1000 * 60 * 60);
-
-  console.log("遲到:", diffHours);
 }

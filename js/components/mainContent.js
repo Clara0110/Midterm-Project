@@ -219,7 +219,7 @@ export function mainContent(actionId) {
         <tr>
           <th rowspan="2">出勤日期</th>
           <th colspan="2">出勤時間</th>
-          <th colspan="2">考勤狀況(分)</th>
+          <th colspan="2">考勤狀況(時)</th>
           <th rowspan="2">請假時數</th>
           <th colspan="3">加班</th>
           <th rowspan="2">實際出勤總時數</th>
