@@ -211,38 +211,40 @@ export function mainContent(actionId) {
     }
   } else if (actionId === "psfl") {
     htmlString += `
-    <table>
-      <thead>
-        <tr>
-        <th colspan="13">${yyyy}年${mm}月份 出勤紀錄</th>
-        </tr>
-        <tr>
-          <th rowspan="2">出勤日期</th>
-          <th colspan="2">出勤時間</th>
-          <th colspan="2">考勤狀況(時)</th>
-          <th rowspan="2">請假時數</th>
-          <th colspan="3">加班</th>
-          <th rowspan="2">實際出勤總時數</th>
-          <th rowspan="2">備註</th>
-        </tr>
-        <tr>
-          <th >上班</th>
-          <th >下班</th>
-          <th>遲到</th>
-          <th>早退</th>
-          <th>起始時間</th>
-          <th>結束時間</th>
-          <th>總時數</th>
-        </tr>
-      </thead>
-      <tbody id="tbody">
-      </tbody>
-    </table>
-    `;
+  <table class="table table-bordered table-striped table-hover text-center align-middle">
+    <thead class="table-light">
+      <tr>
+        <!-- 修正 colspan 為 11 -->
+        <th colspan="11" class="fs-5">${yyyy}年${mm}月份 出勤紀錄</th>
+      </tr>
+      <tr>
+        <th rowspan="2">出勤日期</th>
+        <th colspan="2">出勤時間</th>
+        <th colspan="2">考勤狀況(時)</th>
+        <th rowspan="2">請假時數</th>
+        <th colspan="3">加班</th>
+        <th rowspan="2">實際出勤總時數</th>
+        <th rowspan="2">備註</th>
+      </tr>
+      <tr>
+        <th>上班</th>
+        <th>下班</th>
+        <th>遲到</th>
+        <th>早退</th>
+        <th>起始時間</th>
+        <th>結束時間</th>
+        <th>總時數</th>
+      </tr>
+    </thead>
+    <tbody id="tbody">
+      <!-- 動態資料將插入於此 -->
+    </tbody>
+  </table>
+`;
   } else if (actionId === "attendanceStatus") {
     if (gtwTime.gtwTimeDateTime || gowTime) {
       console.log(gtwTime);
-      
+
       htmlString += `
     <p> 職員 01 :上班時間：${gtwTime.gtwTimeDateTime}，下班時間：${gowTime}</p>
     `;
