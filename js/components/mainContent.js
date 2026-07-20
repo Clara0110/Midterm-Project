@@ -246,7 +246,7 @@ export function mainContent(actionId) {
       console.log(gtwTime);
 
       htmlString += `
-    <p> 職員 01 :上班時間：${gtwTime.gtwTimeDateTime}，下班時間：${gowTime}</p>
+    <p> 職員 01 - 上班時間：${gtwTime.gtwTimeDateTime || "未記錄"}，下班時間：${gowTime || "未記錄"}</p>
     `;
     }
   } else if (actionId === "approvalCenter") {
@@ -333,6 +333,9 @@ export function mainContent(actionId) {
       htmlString += `職員01 - 早退`;
     }
   } else if (actionId === "attendanceSettlement") {
+    htmlString += `
+    
+    `;
   } else if (actionId === "elai") {
   }
 
