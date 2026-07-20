@@ -18,6 +18,8 @@ const { today, dd, mm, yyyy, hour, minute, everyDay } = dateUtils();
 const { gtwTime, gowTime, muciData, talData, overtimeData, keyDecisions } =
   getItem();
 
+console.log(gtwTime);
+
 export function mainContent(actionId) {
   const container = document.getElementById("main-content");
   let htmlString = ``;
@@ -289,32 +291,45 @@ export function mainContent(actionId) {
       );
     }
   } else if (actionId === "exceptionHandling") {
-    let isCheckingIn = false;
-    let isSignOut = false;
+    let isCheckingIn = !!gtwTime?.gtwTime;
+    let isSignOut = !!gowTime;
 
-    if (gtwTime.gtwTime) {
-      isCheckingIn = true;
-    } else {
-      isCheckingIn = false;
-    }
-
-    if (gowTime) {
-      isSignOut = true;
-    } else {
-      isSignOut = false;
-    }
+    let isLate = false;
+    let leaveEarly = false;
 
     const hour = today.getHours();
     const minute = today.getMinutes();
     const currentTime = toMinutes(hour, minute);
     const eightClock = toMinutes(8, 0);
-    const threePMClock = toMinutes(17, 0);
+    const fivePMClock = toMinutes(17, 0);
+
+    // 遲到
+    if (gtwTime?.gtwTime) {
+      const [hours, minutes] = gtwTime.gtwTime.split(":").map(Number);
+      const wsxClock = toMinutes(hours, minutes);
+      if (wsxClock > eightClock) {
+        isLate = true;
+      }
+    }
+
+    // 早退
+    if (gowTime) {
+      const [g, s] = gowTime.split(":").map(Number);
+      const qazClock = toMinutes(g, s);
+      if (qazClock < fivePMClock) {
+        leaveEarly = true;
+      }
+    }
 
     if (!isCheckingIn && currentTime > eightClock) {
       htmlString += `職員01 - 未打卡`;
-    } else if (!isSignOut && currentTime > threePMClock) {
+    } else if (!isSignOut && currentTime > fivePMClock) {
       htmlString += `職員01 - 未簽退`;
-    } 
+    } else if (isLate) {
+      htmlString += `職員01 - 遲到`;
+    } else if (leaveEarly) {
+      htmlString += `職員01 - 早退`;
+    }
   } else if (actionId === "attendanceSettlement") {
   } else if (actionId === "elai") {
   }

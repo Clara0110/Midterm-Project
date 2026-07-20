@@ -1,27 +1,16 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <script>
-      function late() {
-        let d = new Date();
-        d.setHours(8, 0, 0, 0);
 
-        const gtwTime = JSON.parse(localStorage.getItem("gtwTime") ?? '""');
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
 
-        const [hour, minute] = gtwTime.gtwTime.split(":").map(Number);
+<body>
+  <script>
 
-        let qweTime = new Date();
-        qweTime.setHours(hour, minute, 0, 0);
+  </script>
+</body>
 
-        if (qweTime >= d) {
-          console.log("大於八點");
-        }
-      }
-    </script>
-  </body>
 </html>
