@@ -289,7 +289,32 @@ export function mainContent(actionId) {
       );
     }
   } else if (actionId === "exceptionHandling") {
-    htmlString += `123`;
+    let isCheckingIn = false;
+    let isSignOut = false;
+
+    if (gtwTime.gtwTime) {
+      isCheckingIn = true;
+    } else {
+      isCheckingIn = false;
+    }
+
+    if (gowTime) {
+      isSignOut = true;
+    } else {
+      isSignOut = false;
+    }
+
+    const hour = today.getHours();
+    const minute = today.getMinutes();
+    const currentTime = toMinutes(hour, minute);
+    const eightClock = toMinutes(8, 0);
+    const threePMClock = toMinutes(17, 0);
+
+    if (!isCheckingIn && currentTime > eightClock) {
+      htmlString += `職員01 - 未打卡`;
+    } else if (!isSignOut && currentTime > threePMClock) {
+      htmlString += `職員01 - 未簽退`;
+    } 
   } else if (actionId === "attendanceSettlement") {
   } else if (actionId === "elai") {
   }
@@ -327,7 +352,7 @@ export function mainContent(actionId) {
       approvalCenter();
       break;
     case "exceptionHandling":
-      exceptionHandling();
+      // exceptionHandling();
       break;
     // case "attendanceSettlement":
     // case "elai":
@@ -343,4 +368,8 @@ function calculateLeaveDays(startDate, endDate) {
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60));
 
   return diffDays;
+}
+
+function toMinutes(hours, minutes) {
+  return hours * 60 + minutes;
 }

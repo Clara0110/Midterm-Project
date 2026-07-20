@@ -1,5 +1,5 @@
 export function getItem() {
-  const gtwTime = JSON.parse(localStorage.getItem("gtwTime") ?? "{}"); // gtwTime
+  const gtwTime = JSON.parse(localStorage.getItem("gtwTime") ?? "{}"); // gtwTime、late
   const gowTime = localStorage.getItem("gowTime") ?? ""; // gowTime
   const muciData = JSON.parse(localStorage.getItem("muciData") ?? "{}"); // muciInput、muciDate、muciTime
   const talData = JSON.parse(localStorage.getItem("talData") ?? "{}"); // talCategory、startDay、endDay

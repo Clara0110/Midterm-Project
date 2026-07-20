@@ -1,3 +1,7 @@
+import { dateUtils } from "../tool/dateUtils.js"
+
+const { today } = dateUtils();
+
 export function gtw() {
   const gtwForm = document.getElementById("gtw-form");
   gtwForm.addEventListener("submit", (event) => {
@@ -9,14 +13,13 @@ export function gtw() {
     const gtwTime = document.getElementById("gtw-time").dateTime;
     const [hour, minute] = gtwTime.split(":").map(Number);
 
+
     let qweTime = new Date();
     qweTime.setHours(hour, minute, 0, 0);
 
     const diffHours = (qweTime - d) / (1000 * 60 * 60);
 
-    console.log("遲到:", diffHours);
-
-    const gtwData = { gtwTime: gtwTime, late: diffHours };
+    const gtwData = { gtwTime: gtwTime, late: diffHours};
     localStorage.setItem("gtwTime", JSON.stringify(gtwData));
 
     location.reload();

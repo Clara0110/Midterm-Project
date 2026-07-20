@@ -10,7 +10,6 @@ export function psfl() {
 
   const gowTime = localStorage.getItem("gowTime") || "";
   const gtwTime = JSON.parse(localStorage.getItem("gtwTime") || "{}");
-  console.log(gtwTime);
 
   for (let i = everyDay - 1; i >= 0; i--) {
     const row = document.createElement("tr");
@@ -18,7 +17,7 @@ export function psfl() {
     const currentDay = String(everyDay - i).padStart(2, "0");
     const formattedDate = `${yyyy}/${mm}/${currentDay}`;
     const late = Number(gtwTime.late ?? 0);
-    const asd = late === 0 ? "" : late.toFixed(2);
+    const asd = late === 0 ? "" : late.toFixed(1);
 
     for (let y = 0; y < 11; y++) {
       let content = "";
