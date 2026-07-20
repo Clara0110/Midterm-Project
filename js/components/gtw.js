@@ -20,6 +20,7 @@ export function gtw() {
     const diffHours = (qweTime - d) / (1000 * 60 * 60);
 
     const gtwTime = { gtwTimeDateTime: gtwTimeDateTime, late: diffHours };
+    localStorage.setItem("gtwTime",JSON.stringify(gtwTime));
     location.reload();
   });
 }
