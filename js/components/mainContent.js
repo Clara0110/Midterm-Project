@@ -18,8 +18,6 @@ const { today, dd, mm, yyyy, hour, minute, everyDay } = dateUtils();
 const { gtwTime, gowTime, muciData, talData, overtimeData, keyDecisions } =
   getItem();
 
-console.log(gtwTime);
-
 export function mainContent(actionId) {
   const container = document.getElementById("main-content");
   let htmlString = ``;
@@ -33,7 +31,7 @@ export function mainContent(actionId) {
     htmlString += `
       <h2>上班打卡</h2>
       <form id="gtw-form" class="d-flex flex-column gap-2">
-        <time id="gtw-time" datetime="${hour}:${minute}">現在時間：${hour}:${minute}</time>
+        <time id="gtw-time" dateTime="${hour}:${minute}">現在時間：${hour}:${minute}</time>
         <button class="btn btn-outline-secondary" id="gtw-button" >打卡</button>
       </form>
     `;
@@ -242,9 +240,11 @@ export function mainContent(actionId) {
     </table>
     `;
   } else if (actionId === "attendanceStatus") {
-    if (gtwTime.gtwTime || gowTime) {
+    if (gtwTime.gtwTimeDateTime || gowTime) {
+      console.log(gtwTime);
+      
       htmlString += `
-    <p> 職員 01 :上班時間：${gtwTime.gtwTime}，下班時間：${gowTime}</p>
+    <p> 職員 01 :上班時間：${gtwTime.gtwTimeDateTime}，下班時間：${gowTime}</p>
     `;
     }
   } else if (actionId === "approvalCenter") {
@@ -291,7 +291,7 @@ export function mainContent(actionId) {
       );
     }
   } else if (actionId === "exceptionHandling") {
-    let isCheckingIn = !!gtwTime?.gtwTime;
+    let isCheckingIn = !!gtwTime?.gtwTimeDateTime;
     let isSignOut = !!gowTime;
 
     let isLate = false;
@@ -304,8 +304,8 @@ export function mainContent(actionId) {
     const fivePMClock = toMinutes(17, 0);
 
     // 遲到
-    if (gtwTime?.gtwTime) {
-      const [hours, minutes] = gtwTime.gtwTime.split(":").map(Number);
+    if (gtwTime?.gtwTimeDateTime) {
+      const [hours, minutes] = gtwTime.gtwTimeDateTime.split(":").map(Number);
       const wsxClock = toMinutes(hours, minutes);
       if (wsxClock > eightClock) {
         isLate = true;

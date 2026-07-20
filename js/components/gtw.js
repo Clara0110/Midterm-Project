@@ -10,8 +10,8 @@ export function gtw() {
     let d = new Date();
     d.setHours(8, 0, 0, 0);
 
-    const gtwTime = document.getElementById("gtw-time").dateTime;
-    const [hour, minute] = gtwTime.split(":").map(Number);
+    const gtwTimeDateTime = document.getElementById("gtw-time").dateTime;
+    const [hour, minute] = gtwTimeDateTime.split(":").map(Number);
 
 
     let qweTime = new Date();
@@ -19,7 +19,7 @@ export function gtw() {
 
     const diffHours = (qweTime - d) / (1000 * 60 * 60);
 
-    const gtwData = { gtwTime: gtwTime, late: diffHours };
+    const gtwTime = { gtwTimeDateTime: gtwTimeDateTime, late: diffHours };
     location.reload();
   });
 }

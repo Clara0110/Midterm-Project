@@ -28,7 +28,7 @@ export function psfl() {
           break;
 
         case 1:
-          content = i === 0 ? gtwTime.gtwTime : "09:00";
+          content = i === 0 ? gtwTime.gtwTimeDateTime : "09:00";
           break;
 
         case 2:
@@ -39,7 +39,7 @@ export function psfl() {
           content = i === 0 ? asd : "";
           break;
         case 9:
-          if (i === 0 && (gowTime || gtwTime.gtwTime)) {
+          if (i === 0 && (gowTime || gtwTime.gtwTimeDateTime)) {
             content = "";
           } else {
             content = "8";
