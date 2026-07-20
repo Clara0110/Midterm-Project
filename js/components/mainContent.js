@@ -1,16 +1,22 @@
 import { leaveAndOvertimeRequests } from "./leaveAndOvertimeRequests.js";
 import psflData from "../data/psflData.js";
 import { dateUtils } from "../tool/dateUtils.js";
+import { getItem } from "../tool/getItem.js";
 
-import { gtw } from "./gtw.js" // 拿取上班打卡時間
-import { gow } from "./gow.js" // 拿取下班打卡時間
+import { gtw } from "./gtw.js"; // 拿取上班打卡時間
+import { gow } from "./gow.js"; // 拿取下班打卡時間
 import { muci } from "./muci.js";
 import { initTal } from "./initTal.js"; // 請假申請
 import { overtime } from "./overTime.js"; // 加班申請
 import { psfl } from "./psfl.js";
+import { approvalCenter } from "./approvalCenter.js";
+import { fa } from "./fa.js";
+import { mySchedule } from "./mySchedule.js  ";
 
 // 設定輸入日期
 const { today, dd, mm, yyyy, hour, minute, everyDay } = dateUtils();
+const { gtwTime, gowTime, muciData, talData, overtimeData, keyDecisions } =
+  getItem();
 
 export function mainContent(actionId) {
   const container = document.getElementById("main-content");
@@ -96,67 +102,111 @@ export function mainContent(actionId) {
       </form>
     `;
   } else if (actionId === "fa") {
-    // 待改:主管簽核後才顯示請假紀錄
+    let approvedRecordsHTML = "";
+
+    if (talData.talCategory && keyDecisions["leave_form"] === "agree") {
+      approvedRecordsHTML += `
+    <div style="margin-bottom: 10px;">
+      <strong>請假</strong>${talData.talCategory} <br>
+      時間：${talData.startDay} 到 ${talData.endDay}
+    </div>
+  `;
+    }
+
+    if (muciData.muciInput && keyDecisions["punch_form"] === "agree") {
+      approvedRecordsHTML += `
+    <div style="margin-bottom: 10px;">
+      <strong>補打卡</strong>-原因：${muciData.muciInput} <br>
+      時間：${muciData.muciDate} ${muciData.muciTime}
+    </div>
+  `;
+    }
+
+    if (
+      overtimeData.overtimeReason &&
+      keyDecisions["overtime_form"] === "agree"
+    ) {
+      approvedRecordsHTML += `
+    <div style="margin-bottom: 10px;">
+      <strong>加班</strong>${overtimeData.overtimeReason} <br>
+      時間：${overtimeData.overtimeStart} 到 ${overtimeData.overtimeEnd}
+    </div>
+  `;
+    }
+
+    if (approvedRecordsHTML === "") {
+      approvedRecordsHTML =
+        "<span style='color: gray;'>暫無已核准的假勤紀錄</span>";
+    }
+
     htmlString += `
     <div class="d-flex flex-column gap-2">
       <h2>假勤明細</h2>
       <div class="row">
       <section id="left-section" class="col-6">
-      <p>請假紀錄：</p>
+        <p>核准紀錄：</p>
+        <div id="fa">${approvedRecordsHTML}</div> 
       </section>
-      <section id="right-section "class="col-6">
-      <p>可用假別：</p>
-      <ul>
-        <li>事假：每年最多 14 天（無薪）</li>
-        <li>病假：普通傷病每年最多 30 天（折半薪）；住院最多 1 年</li>
-        <li>婚假：8 天（全薪）</li>
-        <li>喪假：3–8 天（依親屬等級，全薪）</li>
-        <li>公假：依法或因公務需要，全薪</li>
-        <li>生理假：每月 1 天，全年最多 3 天（折半薪）</li>
-        <li>產假：分娩 8 週；流產 5 日至 4 週（全薪）</li>
-        <li>安胎休養假：依醫師診斷需要</li>
-        <li>產檢假：7 天（全薪）</li>
-        <li>陪產假：7 天（全薪，逾 5 日政府補助）</li>
-        <li>家庭照顧假：每年最多 7 天（併入事假，無薪）</li>
-        <li>育嬰留職停薪假：最長 2 年（無薪，保障復職）</li>
-        <li>特別休假（年假）：年資滿 1 年有 3 天</li>
-      </ul>
+      <section id="right-section" class="col-6">
+        <p>可用假別：</p>
+        <ul>
+          <li>事假：每年最多 14 天（無薪）</li>
+          <li>病假：普通傷病每年最多 30 天（折半薪）；住院最多 1 年</li>
+          <li>婚假：8 天（全薪）</li>
+          <li>喪假：3–8 天（依親屬等級，全薪）</li>
+          <li>公假：依法或因公務需要，全薪</li>
+          <li>生理假：每月 1 天，全年最多 3 天（折半薪）</li>
+          <li>產假：分娩 8 週；流產 5 日至 4 週（全薪）</li>
+          <li>安胎休養假：依醫師診斷需要</li>
+          <li>產檢假：7 天（全薪）</li>
+          <li>陪產假：7 天（全薪，逾 5 日政府補助）</li>
+          <li>家庭照顧假：每年最多 7 天（併入事假，無薪）</li>
+          <li>育嬰留職停薪假：最長 2 年（無薪，保障復職）</li>
+          <li>特別休假（年假）：年資滿 1 年有 3 天</li>
+        </ul>
       </section>
+      </div>
     </div>
-    </div>
-    `;
+`;
   } else if (actionId === "mySchedule") {
-    const talData = JSON.parse(localStorage.getItem("talData") ?? '""'); // talCategory、startDay、endDay
-    const muciData = JSON.parse(localStorage.getItem("muciData") ?? '""'); // muciInput、muciDate、muciTime
-    const overtimeData = JSON.parse(localStorage.getItem("overtimeData") ?? '""'); // overtimeReason、overtimeStart、overtimeEnd
-
-    function buildForm(title, content) {
-      return `
-    <form>
-      <p style="display:inline-block" >${title} <br> ${content}</p>
-    </form>
-    <hr/>
-  `;
+    function buildForm(key, title, content) {
+      if (keyDecisions[key] == "agree" || keyDecisions[key] == "reject") {
+        return ``;
+      } else {
+        return `
+      <form>
+        <p style="display:inline-block" data-key=${key} >${title} <br> ${content}</p>
+      </form>
+      <hr/>
+    `;
+      }
     }
 
     if (talData.talCategory && talData.startDay && talData.endDay) {
       htmlString += buildForm(
+        "leave_form",
         "請假申請",
-        `類別：${talData.talCategory}，${talData.startDay} 到 ${talData.endDay}`
+        `類別：${talData.talCategory}，${talData.startDay} 到 ${talData.endDay}`,
       );
     }
 
     if (muciData.muciInput && muciData.muciDate && muciData.muciTime) {
       htmlString += buildForm(
+        "punch_form",
         "補打卡申請",
-        `原因：${muciData.muciInput}，${muciData.muciDate} 到 ${muciData.muciTime}`
+        `原因：${muciData.muciInput}，${muciData.muciDate} 到 ${muciData.muciTime}`,
       );
     }
 
-    if (overtimeData.overtimeReason && overtimeData.overtimeStart && overtimeData.overtimeEnd) {
+    if (
+      overtimeData.overtimeReason &&
+      overtimeData.overtimeStart &&
+      overtimeData.overtimeEnd
+    ) {
       htmlString += buildForm(
+        "overtime_form",
         "加班申請",
-        `原因：${overtimeData.overtimeReason}，${overtimeData.overtimeStart} 到 ${overtimeData.overtimeEnd}`
+        `原因：${overtimeData.overtimeReason}，${overtimeData.overtimeStart} 到 ${overtimeData.overtimeEnd}`,
       );
     }
   } else if (actionId === "psfl") {
@@ -169,7 +219,7 @@ export function mainContent(actionId) {
         <tr>
           <th rowspan="2">出勤日期</th>
           <th colspan="2">出勤時間</th>
-          <th colspan="2">考勤狀況(分)</th>
+          <th colspan="2">考勤狀況(時)</th>
           <th rowspan="2">請假時數</th>
           <th colspan="3">加班</th>
           <th rowspan="2">實際出勤總時數</th>
@@ -190,61 +240,59 @@ export function mainContent(actionId) {
     </table>
     `;
   } else if (actionId === "attendanceStatus") {
-    const gtwTime = JSON.parse(localStorage.getItem("gtwTime") ?? '""');
-    const gowTime = JSON.parse(localStorage.getItem("gowTime") ?? '""');
-    if (gtwTime || gowTime) {
+    if (gtwTime.gtwTime || gowTime) {
       htmlString += `
-    <p> 職員 01 :上班時間：${gtwTime}，下班時間：${gowTime}</p>
+    <p> 職員 01 :上班時間：${gtwTime.gtwTime}，下班時間：${gowTime}</p>
     `;
     }
   } else if (actionId === "approvalCenter") {
-    const talData = JSON.parse(localStorage.getItem("talData") ?? '""'); // talCategory、startDay、endDay
-    const muciData = JSON.parse(localStorage.getItem("muciData") ?? '""'); // muciInput、muciDate、muciTime
-    const overtimeData = JSON.parse(localStorage.getItem("overtimeData") ?? '""'); // overtimeReason、overtimeStart、overtimeEnd
-    const decision = JSON.parse(localStorage.getItem("decision"));
-
-    function buildForm(title, content) {
-      if (decision == "agree" || decision == "reject") {
+    function buildForm(key, title, content) {
+      if (keyDecisions[key] === "agree" || keyDecisions[key] === "reject") {
         return ``;
       } else {
         return `
-        <form id="approvalCenterForm">
-          <p style="display:inline-block">${title} - 職員 01 <br> ${content}</p>
-          <button id="approvalCenterAgree" class="btn btn-outline-secondary" style="margin:1px">✓</button>
-          <button id="approvalCenterReject" class="btn btn-outline-secondary" style="margin:1px">✘</button>
-        </form>
-        <hr/>
-      `;
+    <form class="approval-center-form" data-key="${key}">
+      <p style="display:inline-block">${title} - 職員 01 <br> ${content}</p>
+      <button type="button" class="approval-center-agree btn btn-outline-secondary" style="margin:1px" data-key="${key}">✓</button>
+      <button type="button" class="approval-center-reject btn btn-outline-secondary" style="margin:1px" data-key="${key}">✘</button>
+    </form>
+    <hr/>
+    `;
       }
     }
 
-
     if (talData.talCategory && talData.startDay && talData.endDay) {
       htmlString += buildForm(
+        "leave_form",
         "請假申請",
-        `類別：${talData.talCategory}，${talData.startDay} 到 ${talData.endDay}`
+        `類別：${talData.talCategory}，${talData.startDay} 到 ${talData.endDay}`,
       );
     }
 
     if (muciData.muciInput && muciData.muciDate && muciData.muciTime) {
       htmlString += buildForm(
+        "punch_form",
         "補打卡申請",
-        `原因：${muciData.muciInput}，${muciData.muciDate} 到 ${muciData.muciTime}`
+        `原因：${muciData.muciInput}，${muciData.muciDate} 到 ${muciData.muciTime}`,
       );
     }
 
-    if (overtimeData.overtimeReason && overtimeData.overtimeStart && overtimeData.overtimeEnd) {
+    if (
+      overtimeData.overtimeReason &&
+      overtimeData.overtimeStart &&
+      overtimeData.overtimeEnd
+    ) {
       htmlString += buildForm(
+        "overtime_form",
         "加班申請",
-        `原因：${overtimeData.overtimeReason}，${overtimeData.overtimeStart} 到 ${overtimeData.overtimeEnd}`
+        `原因：${overtimeData.overtimeReason}，${overtimeData.overtimeStart} 到 ${overtimeData.overtimeEnd}`,
       );
     }
-
   } else if (actionId === "exceptionHandling") {
     htmlString += `123`;
   } else if (actionId === "attendanceSettlement") {
-  } else if (actionId === "elai") { }
-
+  } else if (actionId === "elai") {
+  }
 
   container.innerHTML = htmlString;
 
@@ -264,8 +312,12 @@ export function mainContent(actionId) {
     case "overtime":
       overtime();
       break;
-    // case fa:
-    // case mySchedule:
+    case fa:
+      fa();
+      break;
+    case mySchedule:
+      mySchedule();
+      break;
     case "psfl":
       // 提取考勤資料
       psfl();
@@ -274,35 +326,12 @@ export function mainContent(actionId) {
     case "approvalCenter":
       approvalCenter();
       break;
-    // case "exceptionHandling":
+    case "exceptionHandling":
+      exceptionHandling();
+      break;
     // case "attendanceSettlement":
     // case "elai":
   }
-}
-
-function approvalCenter() {
-  let decision = null;
-
-  const approvalCenterAgree = document.getElementById("approvalCenterAgree");
-  const approvalCenterReject = document.getElementById("approvalCenterReject");
-
-  approvalCenterAgree.addEventListener("click", (event) => {
-    event.preventDefault();
-    decision = "agree";
-    localStorage.setItem("decision", JSON.stringify(decision));
-    // location.reload() 會重新載入整個 HTML、CSS、JS，等於把整個應用程式重跑一次
-    mainContent("approvalCenter");
-  })
-
-  approvalCenterReject.addEventListener("click", (event) => {
-    event.preventDefault();
-    decision = "reject";
-    localStorage.setItem("decision", JSON.stringify(decision));
-    mainContent("approvalCenter");
-  })
-
-
-
 }
 
 function calculateLeaveDays(startDate, endDate) {
