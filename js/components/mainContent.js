@@ -112,7 +112,7 @@ export function mainContent(actionId) {
     if (talData.talCategory && keyDecisions["leave_form"] === "agree") {
       approvedRecordsHTML += `
     <div style="margin-bottom: 10px;">
-      <strong>請假</strong>${talData.talCategory} <br>
+      <strong>請假</strong>-${talData.talCategory} <br>
       時間：${talData.startDay} 到 ${talData.endDay}
     </div>
   `;
@@ -133,7 +133,7 @@ export function mainContent(actionId) {
     ) {
       approvedRecordsHTML += `
     <div style="margin-bottom: 10px;">
-      <strong>加班</strong>${overtimeData.overtimeReason} <br>
+      <strong>加班</strong>-${overtimeData.overtimeReason} <br>
       時間：${overtimeData.overtimeStart} 到 ${overtimeData.overtimeEnd}
     </div>
   `;
