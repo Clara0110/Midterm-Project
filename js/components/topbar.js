@@ -62,11 +62,6 @@ export function topbar(role, currentMenuId, actionId) {
             class="content-list-group-item end list-group-item-action" href="#/manager/aems/attendanceSettlement">考勤結算</a>
           `;
           
-  } else if (role === "manager" && currentMenuId === "eRightsOverview") {
-    htmlString += `
-             <a
-            class="content-list-group-item start end list-group-item-action" onfocus="this.blur()">員工權益總覽</a>
-          `;
   }
 
   container.innerHTML = htmlString;

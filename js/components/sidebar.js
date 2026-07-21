@@ -25,9 +25,6 @@ export function sidebar(role, currentMenuId) {
           <a class="list-group-item list-group-item-action" href="#/manager/aems/exceptionHandling"
             >考勤管理</a
           >
-          <a class="list-group-item list-group-item-action" href="#/manager/eRightsOverview/elai"
-            >員工權益總覽</a
-          >
     `;
   }
 

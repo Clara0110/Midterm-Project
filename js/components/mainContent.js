@@ -336,7 +336,6 @@ export function mainContent(actionId) {
     htmlString += `
     
     `;
-  } else if (actionId === "elai") {
   }
 
   container.innerHTML = htmlString;
@@ -375,7 +374,6 @@ export function mainContent(actionId) {
       // exceptionHandling();
       break;
     // case "attendanceSettlement":
-    // case "elai":
   }
 }
 
