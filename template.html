@@ -5,52 +5,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        /* CSS 樣式設計 */
+.attendance-item {
+  display: flex;
+  justify-content: space-between; /* 讓名字靠左，狀態靠右，畫面更整齊 */
+  align-items: center;
+  padding: 12px 16px;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px; /* 圓角讓視覺更柔和 */
+  margin-bottom: 8px;
+}
+
+.employee-name {
+  font-weight: 500;
+  color: #333333;
+}
+
+/* 狀態標籤的基礎樣式 */
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* 針對不同狀態給予不同顏色 */
+.is-warning {
+  background-color: #fff3e0;
+  color: #e65100; /* 橘色代表提醒（未打卡、未簽退） */
+}
+
+.is-danger {
+  background-color: #ffebee;
+  color: #c62828; /* 紅色代表警告（遲到、早退） */
+}
+    </style>
 </head>
 
 <body>
-    <div id="container">
-        <div id="top">
-            <h2>結算作業</h2>
-            <span>(2026-07)</span>
-            <span>系統時間:</span>
-            <span>結算開放日:</span>
-            <button>批次結算</button>
-        </div>
-
-        <table style="width: 100%; text-align: left; border-collapse: collapse;">
-            <thead>
-                <tr>
-                    <th>識別碼</th>
-                    <th>出勤時數 (實/應)</th>
-                    <th>假 / 加 (時數)</th>
-                    <th>資料狀態</th>
-                    <th>操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <input type="checkbox" id="checkbox-1" name="checkbox-1">
-                        <label for="checkbox-1">03</label>
-                    </td>
-                    <td>160.0 / 160.0 h 100%</td>
-                    <td>0.0 | 12.5</td>
-                    <td>已確認</td>
-                    <td><button>編輯</button></td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" id="checkbox-2" name="checkbox-2">
-                        <label for="checkbox-2">03</label>
-                    </td>
-                    <td>160.0 / 160.0 h 100%</td>
-                    <td>0.0 | 12.5</td>
-                    <td>未確認</td>
-                    <td><button>編輯</button></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <!-- HTML 結構 -->
+<div class="attendance-item">
+  <span class="employee-name">職員01</span>
+  
+  <!-- 依照您的 TypeScript 邏輯，渲染對應的狀態標籤 -->
+  <span class="status-badge is-warning">未打卡</span>
+  <!-- 若是遲到，可以替換成： <span class="status-badge is-danger">遲到</span> -->
+</div>
 </body>
 
 </html>

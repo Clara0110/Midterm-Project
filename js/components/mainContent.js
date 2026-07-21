@@ -246,7 +246,10 @@ export function mainContent(actionId) {
       console.log(gtwTime);
 
       htmlString += `
-    <p> 職員 01 - 上班時間：${gtwTime.gtwTimeDateTime || "未記錄"}，下班時間：${gowTime || "未記錄"}</p>
+      <div class="attendance-item">
+        <span class="employee-name">職員01</span>
+        <span class="status-badge is-danger">上班時間：${gtwTime.gtwTimeDateTime || "未記錄"}，下班時間：${gowTime || "未記錄"}</span>
+      </div>
     `;
     }
   } else if (actionId === "approvalCenter") {
@@ -255,10 +258,10 @@ export function mainContent(actionId) {
         return ``;
       } else {
         return `
-    <form class="approval-center-form" data-key="${key}">
-      <p style="display:inline-block">${title} - 職員 01 <br> ${content}</p>
-      <button type="button" class="approval-center-agree btn btn-outline-secondary" style="margin:1px" data-key="${key}">✓</button>
-      <button type="button" class="approval-center-reject btn btn-outline-secondary" style="margin:1px" data-key="${key}">✘</button>
+    <form class="approval-center-form d-flex align-items-center gap-2" data-key="${key}">
+      <p class="me-auto mb-0">${title} - 職員 01 <br> ${content}</p>
+      <button type="button" class="approval-center-agree btn btn-outline-secondary" data-key="${key}">✓</button>
+      <button type="button" class="approval-center-reject btn btn-outline-secondary" data-key="${key}">✘</button>
     </form>
     <hr/>
     `;
@@ -324,13 +327,33 @@ export function mainContent(actionId) {
     }
 
     if (!isCheckingIn && currentTime > eightClock) {
-      htmlString += `職員01 - 未打卡`;
+      htmlString += `
+      <div class="attendance-item">
+        <span class="employee-name">職員01</span>
+        <span class="status-badge is-missing">未打卡</span>
+      </div>
+      `;
     } else if (!isSignOut && currentTime > fivePMClock) {
-      htmlString += `職員01 - 未簽退`;
+      htmlString += `
+      <div class="attendance-item">
+        <span class="employee-name">職員01</span>
+        <span class="status-badge is-missing">未簽退</span>
+      </div>
+      `;
     } else if (isLate) {
-      htmlString += `職員01 - 遲到`;
+      htmlString += `
+      <div class="attendance-item">
+        <span class="employee-name">職員01</span>
+        <span class="status-badge is-danger">遲到</span>
+      </div>
+      `;
     } else if (leaveEarly) {
-      htmlString += `職員01 - 早退`;
+      htmlString += `
+      <div class="attendance-item">
+        <span class="employee-name">職員01</span>
+        <span class="status-badge is-missing">早退</span>
+      </div>
+      `;
     }
   } else if (actionId === "attendanceSettlement") {
     htmlString += `
@@ -422,9 +445,9 @@ export function mainContent(actionId) {
     case "approvalCenter":
       approvalCenter();
       break;
-    case "exceptionHandling":
-      // exceptionHandling();
-      break;
+    // case "exceptionHandling":
+    // exceptionHandling();
+    // break;
     // case "attendanceSettlement":
   }
 }
