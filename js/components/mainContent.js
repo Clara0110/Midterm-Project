@@ -24,8 +24,13 @@ export function mainContent(actionId) {
 
   if (actionId === "notice") {
     htmlString += `
-      <h2>公告</h2>
-      <p>這裡是公告內容。</p>
+    <div class="p-3 mb-4 bg-light border-start border-4 border-secondary rounded shadow-sm">
+      <h5 class="fw-bold text-secondary mb-2">公告</h5>
+      <p class="mb-0 text-muted">
+        <span class="badge bg-secondary me-2">維護</span>
+        2026/07/26 上午 08:00 到下午 17:00，將進行系統更新。
+      </p>
+    </div>
     `;
   } else if (actionId === "gtw") {
     htmlString += `
@@ -249,6 +254,14 @@ export function mainContent(actionId) {
       <div class="attendance-item">
         <span class="employee-name">職員01</span>
         <span class="status-badge is-danger">上班時間：${gtwTime.gtwTimeDateTime || "未記錄"}，下班時間：${gowTime || "未記錄"}</span>
+      </div>
+      <div class="attendance-item">
+        <span class="employee-name">職員02</span>
+        <span class="status-badge is-danger">上班時間：09:00，下班時間：未記錄</span>
+      </div>
+      <div class="attendance-item">
+        <span class="employee-name">職員03</span>
+        <span class="status-badge is-danger">上班時間：09:00，下班時間：未記錄</span>
       </div>
     `;
     }
