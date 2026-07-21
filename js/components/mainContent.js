@@ -334,7 +334,59 @@ export function mainContent(actionId) {
     }
   } else if (actionId === "attendanceSettlement") {
     htmlString += `
-    
+    <div id="container">
+        <div id="top" class="d-flex align-items-center gap-3 mb-3">
+            <h2 class="mb-0">結算作業</h2>
+            <span>(2026-${mm})</span>
+            <span  class="ms-auto text-muted">系統時間:${yyyy}/${mm}/${dd} ${hour}:${minute}</span>
+            <span>結算開放日:每月31日</span>
+            <button class="btn btn-secondary">批次結算</button>
+        </div>
+
+        <table class="table table-light table-striped">
+            <thead>
+                <tr>
+                    <th>識別碼</th>
+                    <th>出勤時數 (實/應)</th>
+                    <th>假 / 加 (時數)</th>
+                    <th>資料狀態</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="checkbox-1" name="checkbox-1" disabled>
+                        <label for="checkbox-1">01</label>
+                    </td>
+                    <td>160.0 / 120.0 h 80%</td>
+                    <td>0.0 | 12.5</td>
+                    <td>未確認</td>
+                    <td><button class="btn btn-secondary">編輯</button></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="checkbox-1" name="checkbox-1" disabled>
+                        <label for="checkbox-1">02</label>
+                    </td>
+                    <td>160.0 / 120.0 h 80%</td>
+                    <td>0.0 | 12.5</td>
+                    <td>未確認</td>
+                    <td><button class="btn btn-secondary">編輯</button></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="checkbox-2" name="checkbox-2" disabled>
+                        <label for="checkbox-2">03</label>
+                    </td>
+                    <td>160.0 / 120.0 h 80%</td>
+                    <td>0.0 | 12.5</td>
+                    <td>未確認</td>
+                    <td><button class="btn btn-secondary">編輯</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     `;
   }
 

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="container">
+        <div id="top">
+            <h2>結算作業</h2>
+            <span>(2026-07)</span>
+            <span>系統時間:</span>
+            <span>結算開放日:</span>
+            <button>批次結算</button>
+        </div>
+
+        <table style="width: 100%; text-align: left; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>識別碼</th>
+                    <th>出勤時數 (實/應)</th>
+                    <th>假 / 加 (時數)</th>
+                    <th>資料狀態</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="checkbox-1" name="checkbox-1">
+                        <label for="checkbox-1">03</label>
+                    </td>
+                    <td>160.0 / 160.0 h 100%</td>
+                    <td>0.0 | 12.5</td>
+                    <td>已確認</td>
+                    <td><button>編輯</button></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="checkbox-2" name="checkbox-2">
+                        <label for="checkbox-2">03</label>
+                    </td>
+                    <td>160.0 / 160.0 h 100%</td>
+                    <td>0.0 | 12.5</td>
+                    <td>未確認</td>
+                    <td><button>編輯</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
