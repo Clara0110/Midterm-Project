@@ -1,4 +1,3 @@
-import { leaveAndOvertimeRequests } from "./leaveAndOvertimeRequests.js";
 import psflData from "../data/psflData.js";
 import { dateUtils } from "../tool/dateUtils.js";
 import { getItem } from "../tool/getItem.js";
@@ -9,9 +8,7 @@ import { muci } from "./muci.js";
 import { initTal } from "./initTal.js"; // 請假申請
 import { overtime } from "./overTime.js"; // 加班申請
 import { psfl } from "./psfl.js";
-import { approvalCenter } from "./approvalCenter.js";
-import { fa } from "./fa.js";
-import { mySchedule } from "./mySchedule.js  ";
+
 
 // 設定輸入日期
 const { today, dd, mm, yyyy, hour, minute, everyDay } = dateUtils();
