@@ -373,7 +373,7 @@ export function mainContent(actionId) {
             <span>(2026-${mm})</span>
             <span  class="ms-auto text-muted">系統時間:${yyyy}/${mm}/${dd} ${hour}:${minute}</span>
             <span>結算開放日:每月31日</span>
-            <button class="btn btn-secondary">批次結算</button>
+            <button class="btn btn-secondary" disabled>批次結算</button>
         </div>
 
         <table class="table table-light table-striped">
@@ -395,7 +395,7 @@ export function mainContent(actionId) {
                     <td>160.0 / 120.0 h 80%</td>
                     <td>0.0 | 12.5</td>
                     <td>未確認</td>
-                    <td><button class="btn btn-secondary">編輯</button></td>
+                    <td><button class="btn btn-secondary" disabled>編輯</button></td>
                 </tr>
                 <tr>
                     <td>
@@ -405,7 +405,7 @@ export function mainContent(actionId) {
                     <td>160.0 / 120.0 h 80%</td>
                     <td>0.0 | 12.5</td>
                     <td>未確認</td>
-                    <td><button class="btn btn-secondary">編輯</button></td>
+                    <td><button class="btn btn-secondary" disabled>編輯</button></td>
                 </tr>
                 <tr>
                     <td>
@@ -415,7 +415,7 @@ export function mainContent(actionId) {
                     <td>160.0 / 120.0 h 80%</td>
                     <td>0.0 | 12.5</td>
                     <td>未確認</td>
-                    <td><button class="btn btn-secondary">編輯</button></td>
+                    <td><button class="btn btn-secondary" disabled>編輯</button></td>
                 </tr>
             </tbody>
         </table>
@@ -426,9 +426,9 @@ export function mainContent(actionId) {
   container.innerHTML = htmlString;
 
   switch (actionId) {
-    case "gtw":
-      gtw();
-      break;
+    // case "gtw":
+    //   gtw();
+    //   break;
     case "gow":
       gow();
       break;
