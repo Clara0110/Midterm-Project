@@ -444,12 +444,12 @@ export function mainContent(actionId) {
     case "overtime":
       overtime();
       break;
-    case fa:
-      fa();
-      break;
-    case mySchedule:
-      mySchedule();
-      break;
+    // case fa:
+    //   fa();
+    //   break;
+    // case mySchedule:
+    //   mySchedule();
+    //   break;
     case "psfl":
       // 提取考勤資料
       psfl();
