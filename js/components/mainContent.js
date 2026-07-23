@@ -8,6 +8,7 @@ import { muci } from "./muci.js";
 import { initTal } from "./initTal.js"; // 請假申請
 import { overtime } from "./overTime.js"; // 加班申請
 import { psfl } from "./psfl.js";
+import { approvalCenter } from "./approvalCenter.js";
 
 
 // 設定輸入日期
@@ -426,9 +427,9 @@ export function mainContent(actionId) {
   container.innerHTML = htmlString;
 
   switch (actionId) {
-    // case "gtw":
-    //   gtw();
-    //   break;
+    case "gtw":
+      gtw();
+      break;
     case "gow":
       gow();
       break;
